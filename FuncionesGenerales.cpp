@@ -89,13 +89,14 @@ float validarFloat(const std::string& mensaje)
             rlutil::setColor(rlutil::COLOR::RED);
             cout << "* Ingreso No Valido, Solo se Admiten Numeros Positivos (acepta decimales) *" << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');///Lipia el Buffer de Entrada por completo
         }
         else {//Si es Valido
             num = stof(ingreso);//Convierte el String a un a un float y lo guarda en Num
             break;//Sale del Bucle
         }
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');///Lipia el Buffer de Entrada por completo
+    
     return num;///Si el bucle completa la iteracion sin encontrar caracteres no Numericos, la funcion devuelve Num.
 }
 
