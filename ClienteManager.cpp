@@ -33,9 +33,10 @@ void ClienteManager::Menu()
         showItem(" Buscar cliente ", 47, 16, y == 2);
         showItem(" Editar cliente ", 47, 17, y == 3);
         showItem(" Eliminar cliente ", 47, 18, y == 4);
-        showItem(" Backup de archivo de Clientes ", 47, 20, y == 6);
-        showItem(" Restauracion de backup de Clientes ", 47, 21, y == 7);
-        showItem2("Volver al menu principal ", 47, 23, y == 9);
+        showItem(" Recuperar cliente eliminado", 47, 19, y == 5);
+        showItem(" Backup de archivo de Clientes ", 47, 21, y == 7);
+        showItem(" Restauracion de backup de Clientes ", 47, 22, y == 8);
+        showItem2("Volver al menu principal ", 47, 24, y == 10);
 
 
         switch (rlutil::getkey()) {
@@ -46,7 +47,7 @@ void ClienteManager::Menu()
             if (y < 0) {
                 y = 0;
             }
-            if (y == 8 || y == 5) {
+            if (y == 6 || y == 9) {
                 y--;
             }
             break;
@@ -54,10 +55,10 @@ void ClienteManager::Menu()
             rlutil::locate(49, 14 + y);
             cout << " " << endl;
             y++;
-            if (y > 8) {
-                y = 8;
+            if (y > 10) {
+                y = 10;
             }
-            if (y == 8 || y == 5) {
+            if (y == 6 || y == 9) {
                 y++;
             }
             break;
@@ -91,17 +92,22 @@ void ClienteManager::Menu()
                 borrarCliente();
                 system("cls");
                 break;
-            case 6:
+            case 5:
                 system("cls");
-                realizarBackup();
+                resturarCliente(); 
                 system("cls");
                 break;
             case 7:
                 system("cls");
+                realizarBackup();
+                system("cls");
+                break;
+            case 8:
+                system("cls");
                 restaurarBackup();
                 system("cls");
                 break;
-            case 9:
+            case 10:
                 opc = 0;
                 system("cls");
                 break;
@@ -875,56 +881,143 @@ void ClienteManager::resturarCliente()
 {
     int cantReg = _archivo.contarClientes();
     if (cantReg == -1) {
-        cout << endl << "* Error de Archivo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No existe archivo de Clientes *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
+    else {
+        int id, pos;
+        rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+        rlutil::locate(10, 1);
+        cout << "* Modulo de Clientes *" << endl << endl;
+        cout << "Restauracion de cliente eliminado" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        rlutil::showcursor();
 
-    if (cantReg > 0) {
-        int id, pos, opc;
-        id = validarInt("- Ingrese el DNI del Cliente: ");
-        system("cls");
+        id = validarInt("Ingrese el DNI del cliente a restaurar: ");
+        rlutil::hidecursor();
+        cout << endl;
+
         pos = buscarCliente(id);
 
-        if (pos == -1) {
-            cout << endl << "* No existen clientes para el DNI buscado *" << endl << endl;
-        }
         if (pos >= 0) {
             Cliente reg;
             reg = _archivo.leerCliente(pos);
+
             if (reg.getEliminado() == true) {
-                cout << "- Desea Restaurar el Registro? (1)Si (2)NO " << endl;
-                opc = validarInt("- Seleccione una Opcion: ");
+                
                 system("cls");
+                rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+                cout << endl << "Cliente a Restaurar: " << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                mostrarCliente(reg);
+                cout << endl;
 
-                switch (opc) {
-                case 1: {
-                    reg.setEliminado(false);
-                    cout << endl;
-                    mostrarCliente(reg);
+                int opc = 1, y = 0;
 
-                    bool restaurar = _archivo.sobreescribirCliente(reg, pos);
-                    
-                    if (restaurar == true) {
-                        cout << endl << setw(25) << " " << "* Registro Restaurado con Exito *" << endl << endl;
+                do {
+                    rlutil::hidecursor();
+                    rlutil::setColor(rlutil::COLOR::WHITE);
+                    rlutil::locate(35, 18);
+                    cout << "* ¿Confirma que desea restaurar este Cliente? *" << endl;
+                    showItem(" Si   ", 51, 20, y == 0);
+                    showItem(" No  ", 51, 21, y == 1);
+
+
+                    switch (rlutil::getkey()) {
+                    case 14: //UP
+                        rlutil::locate(49, 20 + y);
+                        cout << " " << endl;
+                        y--;
+                        if (y < 0) {
+                            y = 0;
+                        }
+                        break;
+                    case 15: //DOWN
+                        rlutil::locate(49, 20 + y);
+                        cout << " " << endl;
+                        y++;
+                        if (y > 1) {
+                            y = 1;
+                        }
+                        break;
+
+                    case 1: //ENTER
+
+                        switch (y) {
+                        case 0: { //SI
+                            reg.setEliminado(false);
+                            cout << endl;
+                            bool restaurar = _archivo.sobreescribirCliente(reg, pos);
+                            if (restaurar == true) {
+                                rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
+                                rlutil::locate(39, 25);
+                                cout << "* Cliente restaurado con Exito *" << endl << endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                                opc = 0;
+                            }
+                            else {
+                                rlutil::setColor(rlutil::COLOR::RED);
+                                rlutil::locate(39, 25);
+                                cout << "* No se pudo restaurar el cliente *" << endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                            }
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+                        }
+                        case 1: // NO
+                            rlutil::setColor(rlutil::COLOR::RED);
+                            rlutil::locate(39, 25);
+                            cout << "* Se cancelo la restauracion del cliente *" << endl;
+                            rlutil::setColor(rlutil::COLOR::WHITE);
+                            opc = 0;
+
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+
+                        default:
+                            break;
+                        }
+
+                        break;
+
+                    default:
+
+                        break;
                     }
-                    else {
-                        cout << endl << "* No se Pudo Restaurar el Registro *" << endl;
-                    }
-                    system("pause");
-                }
-                case 2:
-                    break;
-                default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
-                    return;
-                }
+
+                } while (opc != 0);
+
             }
             else {
-                cout << endl << "* El Registro ya Se Encuentra Disponible *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << endl << "* El cliente a restaurar no se encuentra eliminado *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
                 system("pause");
             }
+
         }
+        else {
+            if (pos == -1) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << endl << "* No existen clientes con el DNI buscado *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            if (pos == -2) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << endl << "* No se pudo abrir el archivo de Clientes *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            system("pause");
+        }
+
     }
-    cout << endl;
+
 }
 
 void ClienteManager::resturarCliente(long long dni, int pos)
