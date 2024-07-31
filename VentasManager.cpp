@@ -1157,6 +1157,7 @@ void VentasManager::restaurarVentaBorrada() {
         rlutil::setColor(rlutil::COLOR::RED);
         cout << endl << "* No existe archivo de Ventas *" << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
+        system("pause");
     }
     else {
         int id, pos;
@@ -1223,7 +1224,7 @@ void VentasManager::restaurarVentaBorrada() {
                             if (restaurar == true) {
                                 rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
                                 rlutil::locate(39, 25);
-                                cout << "* Registro Restaurado con Exito *" << endl << endl;
+                                cout << "* Venta restaurada con Exito *" << endl << endl;
                                 rlutil::setColor(rlutil::COLOR::WHITE);
                                 opc = 0;
                             }
@@ -1283,6 +1284,7 @@ void VentasManager::restaurarVentaBorrada() {
                 cout << endl << "* No se pudo abrir el archivo de Ventas *" << endl << endl;
                 rlutil::setColor(rlutil::COLOR::WHITE);
             }
+            system("pause");
             
         }
     }
@@ -1303,10 +1305,14 @@ void VentasManager::realizarBackup()
     
     rlutil::locate(35, 10);
     if (resultado == 0) {
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
         cout << "* Backup realizado con exito *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << "* Hubo un error al copiar el archivo *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
 
     rlutil::locate(35, 11);
@@ -1327,10 +1333,14 @@ void VentasManager::restaurarBackup()
 
     rlutil::locate(35, 10);
     if (resultado == 0) {
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
         cout << "* Restauracion de backup realizada con exito *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
         cout << "* Hubo un error al copiar el archivo *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
 
     rlutil::locate(35, 11);
