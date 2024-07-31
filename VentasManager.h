@@ -22,6 +22,8 @@ public:
 	void listarVentasXFecha();
 	int buscarVenta(int idVenta);
 	void editarVenta();
+	void editarFechaVenta(Venta &reg, int pos);
+	void editarGastosAdm(Venta &reg, int pos);
 	void realizarBackup();
 	void restaurarBackup();
 	void borrarVenta();

@@ -7,9 +7,9 @@
 #include "FuncionesGenerales.h"
 #include "VentasManager.h"
 #include "SucursalManager.h"
+#include "rlutil.h"
 #include "VendedorManager.h"
 #include "VehiculosManager.h"
-#include "rlutil.h"
 using namespace std;
 
 
@@ -85,7 +85,6 @@ void VentasManager::Menu()
             case 2:
                 system("cls");
                 buscadorDeVentas();
-                system("pause");
                 system("cls");
                 break;
             case 3:
@@ -174,10 +173,10 @@ Venta VentasManager::crearVenta()
     reg.setFechaVenta(f);
     cout << endl;    
 
+    //Validacion del cliente
     dni = validarLong("* INGRESE DNI DEL CLIENTE: ");
     cout << endl;
     
-    //Validacion del cliente
     int posCliente = validarCliente(dni);
 
     if (posCliente >= 0) {
@@ -228,6 +227,7 @@ Venta VentasManager::crearVenta()
                         cliente = crearNuevoCliente();
                         reg.setDniCliente(cliente.getDni());
                         posCliente = validarCliente(cliente.getDni());
+                        opcion = 0;
                         system("cls");
                         break;
                     case 3:
@@ -323,17 +323,27 @@ Venta VentasManager::crearVenta()
     mostrarClienteAsociado(posCliente);
     cout << endl;
     
+    //Validacion Sucursal
     idSucursal = validarInt("* Ingrese ID de Sucursal: ");
     cout << endl;
     
-    //Validacion Sucursal
     int posSucursal = validarSucursal(idSucursal);
     if (posSucursal >= 0) {
         reg.setIdSucursal(idSucursal);
     }
     else {
         do {
-            cout << "* La sucursal no existe. Intente nuevamente *" << endl;
+            if (posSucursal == -1) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << "* La sucursal no existe. Intente nuevamente *" << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            if (posSucursal == -2) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << "* La sucursal se encuentra eliminada. Solo se permiten sucursales existentes *" << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            cout << endl;
             idSucursal = validarInt("* Ingrese ID de Sucursal: ");
             posSucursal = validarSucursal(idSucursal); 
         } while (posSucursal < 0);
@@ -345,18 +355,27 @@ Venta VentasManager::crearVenta()
     cout << endl;
 
     
-    
+    //Validacion Vendedor
     nroLegajo = validarInt("* Ingrese Legajo del Vendedor: ");
     cout << endl; 
 
-    //Validacion Vendedor
     int posVendedor = validarVendedor(nroLegajo);
     if (posVendedor >= 0) {
         reg.setNroLegajo(nroLegajo);
     }
     else {
         do {
-            cout << "* El vendedor no existe. Intente nuevamente *" << endl;
+            if (posVendedor == -1) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << "* El vendedor no existe. Intente nuevamente *" << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            if (posVendedor == -2) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << "* El vendedor se encuentra eliminado. Solo se permiten vendedores activos *" << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            cout << endl;
             nroLegajo = validarInt("* Ingrese Legajo del Vendedor: ");
             posVendedor = validarVendedor(nroLegajo);
         } while (posVendedor < 0);
@@ -367,10 +386,10 @@ Venta VentasManager::crearVenta()
     mostrarVendedorAsociado(posVendedor);
     cout << endl;
     
+    //Validacion Vehiculo
     idVehiculo = validarInt("* Ingrese ID del Vehiculo adquirido: ");
     cout << endl;
 
-    //Validacion Vehiculo
     bool vehiculoDisponible = validarVehiculo(idVehiculo);
     
     if (vehiculoDisponible == true) { 
@@ -379,14 +398,48 @@ Venta VentasManager::crearVenta()
     mostrarVehiculoAsociado(idVehiculo);
     cout << endl; 
     
+    //carga Datos Administrativos
     gastos = pedirNumeroFloat("* Ingrese Gastos Administrativos: $");
     reg.setGastosAdm(gastos); 
 
+    //mostrar Resumen final de la Venta
+    system("cls");
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(0, 10);
+    cout << "* Datos de la venta *" << endl << endl;
+    cout << "Venta: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    cout << "# " << reg.getIdVenta() << endl;
+    cout << endl;
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    cout << "Fecha de Venta: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    cout << reg.getFechaVenta().toString() << endl;
+    cout << endl;
+    mostrarClienteAsociado(reg.getDniCliente());
+    cout << endl;
+    mostrarSucursalAsociada(reg.getIdSucursal());
+    mostrarVendedorAsociado(reg.getNroLegajo());
+    cout << endl;
+    mostrarVehiculoAsociado(reg.getIdVehiculo());
+    cout << endl;
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    cout << "Gastos Administrativos: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    cout << "$ " << formatearNumero(reg.getGastosAdm()) << endl;
+
+    //calculo Total
     total = calcularPrecioTotal(reg.getGastosAdm(), obtenerPrecioVehiculo(idVehiculo));
     reg.setTotalVentas(total);
     cout << endl;
-    cout << "* Total Venta: $" << formatearNumero(reg.getTotalVenta()) << endl; 
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    cout << "* Total Venta: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    cout << "$ " << formatearNumero(reg.getTotalVenta()) << endl;
     cout << endl;
+
+    //estado de venta: Activa
     reg.setEliminado(false);
 
     return reg;
@@ -456,7 +509,7 @@ void VentasManager::encabezadoListadoVentas()
     cout << setw(19) << "GASTOS ADM ";
     cout << setw(16) << "TOTAL VENTA ";
     cout << endl;
-    cout << "------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "----------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
 }
@@ -484,33 +537,72 @@ void VentasManager::mostrarVentaEnLinea(Venta reg)
 
 void VentasManager::menuListados()
 {
-    int opc;
-    cout << "Como desea ordenar el listado de Ventas?" << endl;
-    cout << "1 - por ID" << endl;
-    cout << "2 - por Fecha de Venta " << endl << endl;
-    cout << "0 - Volver al menu anterior" << endl << endl;
-    opc = validarInt("Ingrese opcion: ");
-    cout << endl;
 
-    switch (opc)
-    {
-    case 1:
-        listarVentas();
-        system("pause");
-        break;
+    int opcion = 1, y = 0;
+    do {
+        rlutil::locate(39, 9);
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        cout << "* ¿Como desea ordenar el listado de Ventas? *" << endl;
+        showItem(" por ID de Venta ", 51, 11, y == 0);
+        showItem(" por Fecha de Venta ", 51, 12, y == 1);
+        showItem2(" Volver ", 51, 14, y == 3);
 
-    case 2:
-        listarVentasXFecha();
-        system("pause");
-        break;
 
-    case 0:
-        break;
+        switch (rlutil::getkey()) {
+        case 14: //UP
+            rlutil::locate(49, 11 + y);
+            cout << " " << endl;
+            y--;
+            if (y < 0) {
+                y = 0;
+            }
+            if (y == 2) {
+                y--;
+            }
+            break;
+        case 15: //DOWN
+            rlutil::locate(49, 11 + y);
+            cout << " " << endl;
+            y++;
+            if (y > 3) {
+                y = 3;
+            }
+            if (y == 2) {
+                y++;
+            }
+            break;
+        case 1: //ENTER
 
-    default:
-        cout << endl << "* Selecione una Opcion Correcta! *" << endl << endl;
-        system("pause");
-    }
+            switch (y) {
+            case 0:
+                system("cls");
+                listarVentas();
+                system("pause");
+                system("cls");
+                break;
+            case 1:
+                system("cls");
+                listarVentasXFecha();
+                system("pause");
+                system("cls");
+                break;
+            case 3:
+                opcion = 0;
+                system("cls");
+                break;
+
+            default:
+                break;
+            }
+
+            break;
+
+        default:
+
+            break;
+        }
+
+    } while (opcion != 0);
 }
 
 void VentasManager::listarVentas()
@@ -519,7 +611,9 @@ void VentasManager::listarVentas()
     Venta reg;
 
     if (cantidad == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << "* No hay Ventas para mostrar *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         encabezadoListadoVentas();
@@ -564,7 +658,9 @@ void VentasManager::listarVentasXFecha()
     vector <Venta> vec;
 
     if (cantidad == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << "* No hay Ventas para mostrar *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         encabezadoListadoVentas();
@@ -582,7 +678,10 @@ void VentasManager::listarVentasXFecha()
         cout << endl;
 
     }
+    cout << endl;
 }
+
+
 
 int VentasManager::buscarVenta(int idVenta)
 {
@@ -605,10 +704,161 @@ int VentasManager::buscarVenta(int idVenta)
     return -1; //se recorrio el archivo y no existe el codigo
 }
 
+void VentasManager::buscadorDeVentas()
+{
+    int cantReg = _archivo.contarVentas();
+    if (cantReg == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* Error de Archivo *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        int opcion = 1, y = 0;
+        do {
+            rlutil::locate(44, 9);
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            cout << "* Buscador de Ventas *" << endl;
+            showItem(" Buscar por ID ", 45, 11, y == 0);
+            showItem(" Buscar por Fecha de Venta ", 45, 12, y == 1);
+            showItem2(" Volver ", 51, 14, y == 3);
+
+
+            switch (rlutil::getkey()) {
+            case 14: //UP
+                rlutil::locate(43, 11 + y);
+                cout << " " << endl;
+                y--;
+                if (y < 0) {
+                    y = 0;
+                }
+                if (y == 2) {
+                    y--;
+                }
+                break;
+            case 15: //DOWN
+                rlutil::locate(43, 11 + y);
+                cout << " " << endl;
+                y++;
+                if (y > 3) {
+                    y = 3;
+                }
+                if (y == 2) {
+                    y++;
+                }
+                break;
+            case 1: //ENTER
+
+                switch (y) {
+                case 0:
+                    system("cls");
+                    buscarVentaPorID();
+                    system("pause");
+                    system("cls");
+                    break;
+                case 1:
+                    system("cls");
+                    buscarVentaPorFecha();
+                    system("pause");
+                    system("cls");
+                    break;
+                case 3:
+                    opcion = 0;
+                    system("cls");
+                    break;
+
+                default:
+                    break;
+                }
+
+                break;
+
+            default:
+
+                break;
+            }
+
+        } while (opcion != 0);
+    }
+    cout << endl;
+}
+
+void VentasManager::buscarVentaPorID()
+{
+    int id, pos;
+    id = validarInt("Ingrese el ID a buscar: ");
+    cout << endl;
+    pos = buscarVenta(id);
+    if (pos == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se Encontraron Registros *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    if (pos >= 0) {
+        Venta reg;
+        reg = _archivo.leerVenta(pos);
+        if (reg.getEliminado() == false) {
+            mostrarVenta(reg);
+            cout << endl;
+        }
+        else {
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* El Registro se Encuentra Eliminado *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+        }
+    }
+    cout << endl;
+}
+
+void VentasManager::buscarVentaPorFecha()
+{
+    Fecha f;
+    Venta reg;
+    int cantReg, contador = 0;
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    cout << "Ingrese fecha a buscar:" << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    f.Cargar();
+    cout << endl;
+
+    cantReg = _archivo.contarVentas();
+    for (int i = 0; i < cantReg; i++) {
+        reg = _archivo.leerVenta(i);
+        if (reg.getEliminado() == false && reg.getFechaVenta().getAnio() == f.getAnio() && reg.getFechaVenta().getMes() == f.getMes() && reg.getFechaVenta().getDia() == f.getDia()) {
+            if (contador == 0) {
+                encabezadoListadoVentas();
+                mostrarVentaEnLinea(reg);
+                contador++;
+            }
+            else {
+                mostrarVentaEnLinea(reg);
+                contador++;
+
+            }
+        }
+    }
+    if (contador == 0) {
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << "* No hay ventas para la fecha buscada * " << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+
+    cout << endl;
+}
+
+
+
 void VentasManager::editarVenta()
 {
-    int id, opcion;
-    
+    int id;
+    int opcion;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Editar venta" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
     id = validarInt("Ingrese ID de Venta a editar: ");
     cout << endl;
     
@@ -619,58 +869,96 @@ void VentasManager::editarVenta()
         reg = _archivo.leerVenta(pos);
 
         if (reg.getEliminado() == false) {
+            rlutil::hidecursor();
+            rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
             cout << endl << "Venta a Editar: " << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
             mostrarVenta(reg);
 
+            int opc = 1, y = 0;
+            do {
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                rlutil::locate(43, 17);
+                cout << "* ¿Que dato desea editar? *" << endl;
+                showItem(" Fecha de Venta", 51, 19, y == 0);
+                showItem(" Gastos Administrativos", 51, 20, y == 1);
+                showItem2(" Volver  ", 51, 23, y == 3);
+
+
+                switch (rlutil::getkey()) {
+                case 14: //UP
+                    rlutil::locate(49, 19 + y);
+                    cout << " " << endl;
+                    y--;
+                    if (y < 0) {
+                        y = 0;
+                    }
+                    if (y == 2) {
+                        y--;
+                    }
+                    break;
+                case 15: //DOWN
+                    rlutil::locate(49, 19 + y);
+                    cout << " " << endl;
+                    y++;
+                    if (y > 3) {
+                        y = 3;
+                    }
+                    if (y == 2) {
+                        y++;
+                    }
+                    break;
+                case 1: //ENTER
+
+                    switch (y) {
+                    case 0: {
+                        system("cls");
+                        editarFechaVenta(reg, pos);
+                        system("pause");
+                        opc = 0;
+                        system("cls");
+                        break;
+                    }
+                    case 1: {
+                        system("cls");
+                        editarGastosAdm(reg, pos);
+                        system("pause");
+                        opc = 0;
+                        system("cls");
+                        break;
+                    }
+
+                    case 3:
+                        opc = 0;
+                        system("cls");
+                        break;
+
+                    default:
+                        break;
+                    }
+
+                    break;
+
+                default:
+
+                    break;
+                }
+
+            } while (opc != 0);
+
             cout << endl;
-            cout << "¿Que dato desea editar?" << endl;
-            cout << "1 - Fecha de Venta" << endl;
-            cout << "2 - Gastos Administrativos" << endl << endl;
-            cout << "0 - Volver al menu anterior" << endl << endl;
-            opcion = validarInt("Opcion: ");
-            cout << endl;
-
-            switch (opcion) {
-            case 1:
-            {
-                Fecha f;
-                f.Cargar();
-                reg.setFechaVenta(f);
-                break;
-            }
-            case 2:
-            {
-                float gastos;
-				gastos = validarFloat("Ingrese nuevo valor de Gastos Administrativos: $");
-				reg.setGastosAdm(gastos);
-				break;
-            
-            case 0:
-                break;
-
-            default:
-                cout << "* Opcion invalida *";
-                break;
-            }
-            }
-            cout << endl;
-            bool result = _archivo.sobreescribirVenta(reg, pos);
-
-            if (result == true && opcion != 0) {
-                cout << "* Se edito correctamente la venta *" << endl;
-            }
-            else {
-                cout << "* No se edito la venta *" << endl;
-            }
-
 
         }
         else {
+            rlutil::setColor(rlutil::COLOR::RED);
             cout << "* La venta buscada se encuentra eliminada *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            system("pause");
         }
     
     }
     else {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << "* Error al buscar la venta. Codigo: (";
         if (pos == -1) {
             cout << pos << ") La venta no existe *" << endl;
@@ -680,7 +968,327 @@ void VentasManager::editarVenta()
 
         }
     }
+    rlutil::setColor(rlutil::COLOR::WHITE);
 }
+
+void VentasManager::editarFechaVenta(Venta &reg, int pos) {
+        Fecha f;
+        rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+        cout << endl << "Venta a Editar: " << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        mostrarVenta(reg);
+        cout << endl << endl;
+
+        rlutil::showcursor();
+        cout << "Ingrese la nueva fecha de venta:" << endl;
+        f.Cargar();
+        reg.setFechaVenta(f);
+        cout << endl;
+
+        bool result = _archivo.sobreescribirVenta(reg, pos); 
+
+        if (result == true) {
+            rlutil::setColor(rlutil::COLOR::GREEN);
+            cout << "* Se edito correctamente la venta *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+        }
+        else {
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* No se edito la venta *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+        }
+}
+
+void VentasManager::editarGastosAdm(Venta &reg, int pos) {
+    float gastos;
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    cout << endl << "Venta a Editar: " << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVenta(reg);
+    cout << endl << endl;
+
+    rlutil::showcursor();
+    gastos = validarFloat("Ingrese nuevo valor de Gastos Administrativos: $ ");
+    reg.setGastosAdm(gastos);
+
+    bool result = _archivo.sobreescribirVenta(reg, pos);
+    if (result == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        cout << "* Se edito correctamente la venta *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << "* No se edito la venta *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+
+}
+
+
+void VentasManager::borrarVenta()
+{
+    int id;
+    int opc;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Borrar Venta" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    rlutil::showcursor();
+
+    id = validarInt("Ingrese ID de Venta a borrar: ");
+    rlutil::hidecursor();
+    cout << endl; 
+
+    int pos = buscarVenta(id); 
+
+    if (pos >= 0) {
+        Venta reg;
+        reg = _archivo.leerVenta(pos);
+
+        if (reg.getEliminado() == true) {
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* La venta ya se encuentra eliminada *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            system("pause");
+        }
+        else {
+            rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+            cout << endl << "Venta a Borrar: " << endl << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            mostrarVenta(reg);
+            cout << endl;
+
+            int opc = 1, y = 0;
+
+            do {
+                rlutil::hidecursor();
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                rlutil::locate(35, 18);
+                cout << "* ¿Confirma que desea borrar esta Venta? *" << endl;
+                showItem(" Si   ", 51, 20, y == 0);
+                showItem(" No  ", 51, 21, y == 1);
+
+
+                switch (rlutil::getkey()) {
+                case 14: //UP
+                    rlutil::locate(49, 20 + y);
+                    cout << " " << endl;
+                    y--;
+                    if (y < 0) {
+                        y = 0;
+                    }
+                    break;
+                case 15: //DOWN
+                    rlutil::locate(49, 20 + y);
+                    cout << " " << endl;
+                    y++;
+                    if (y > 1) {
+                        y = 1;
+                    }
+                    break;
+                case 1: //ENTER
+
+                    switch (y) {
+                    case 0: {
+                        reg.setEliminado(true);
+                        bool result = _archivo.sobreescribirVenta(reg, pos);
+                        if (result = true) {
+                            rlutil::setColor(rlutil::COLOR::GREEN);
+                            rlutil::locate(39, 25);
+                            cout << "* La venta se ha borrado correctamente *" << endl;
+                            rlutil::setColor(rlutil::COLOR::WHITE);
+                            opc = 0;
+                        }
+                        else {
+                            rlutil::setColor(rlutil::COLOR::RED);
+                            rlutil::locate(39, 25);
+                            cout << "* No se pudo eliminar la venta *" << endl;
+                            rlutil::setColor(rlutil::COLOR::WHITE);
+                        }
+                        rlutil::locate(39, 26);
+                        system("pause");
+                        system("cls");
+                        break;
+                    }
+                    case 1:
+                        rlutil::setColor(rlutil::COLOR::RED);
+                        rlutil::locate(39, 25);
+                        cout << "* Se cancelo el borrado de la venta *" << endl;
+                        rlutil::setColor(rlutil::COLOR::WHITE);
+                        opc = 0;
+
+                        rlutil::locate(39, 26);
+                        system("pause");
+                        system("cls");
+                        break;
+
+                    default:
+                        break;
+                    }
+
+                    break;
+
+                default:
+
+                    break;
+                }
+
+            } while (opc != 0);
+
+        }
+
+    }
+    else {
+
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << "* La venta buscada no existe *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        system("pause");
+    }
+
+}
+
+void VentasManager::restaurarVentaBorrada() {
+    int cantReg = _archivo.contarVentas();
+    if (cantReg == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No existe archivo de Ventas *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        int id, pos;
+        rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+        rlutil::locate(10, 1);
+        cout << "* Modulo de VENTAS *" << endl << endl;
+        cout << "Restauracion de venta eliminada" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        rlutil::showcursor();
+
+        id = validarInt("Ingrese el ID de la Venta a restaurar: ");
+        rlutil::hidecursor();
+        cout << endl;
+        
+        pos = buscarVenta(id);
+
+        if (pos >= 0) {
+            Venta reg;
+            reg = _archivo.leerVenta(pos);
+            if (reg.getEliminado() == true) {
+                system("cls");
+                rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+                cout << endl << "Venta a Restaurar: " << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                mostrarVenta(reg);
+                cout << endl;
+
+                int opc = 1, y = 0;
+
+                do {
+                    rlutil::hidecursor();
+                    rlutil::setColor(rlutil::COLOR::WHITE);
+                    rlutil::locate(35, 18);
+                    cout << "* ¿Confirma que desea restaurar esta Venta? *" << endl;
+                    showItem(" Si   ", 51, 20, y == 0);
+                    showItem(" No  ", 51, 21, y == 1);
+
+
+                    switch (rlutil::getkey()) {
+                    case 14: //UP
+                        rlutil::locate(49, 20 + y);
+                        cout << " " << endl;
+                        y--;
+                        if (y < 0) {
+                            y = 0;
+                        }
+                        break;
+                    case 15: //DOWN
+                        rlutil::locate(49, 20 + y);
+                        cout << " " << endl;
+                        y++;
+                        if (y > 1) {
+                            y = 1;
+                        }
+                        break;
+
+                    case 1: //ENTER
+
+                        switch (y) {
+                        case 0: { //SI
+                            reg.setEliminado(false);
+                            cout << endl;
+                            bool restaurar = _archivo.sobreescribirVenta(reg, pos);
+                            if (restaurar == true) {
+                                rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
+                                rlutil::locate(39, 25);
+                                cout << "* Registro Restaurado con Exito *" << endl << endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                                opc = 0;
+                            }
+                            else {
+                                rlutil::setColor(rlutil::COLOR::RED);
+                                rlutil::locate(39, 25);
+                                cout << "* No se pudo restaurar la venta *" << endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                            }
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+                        }
+                        case 1: // NO
+                            rlutil::setColor(rlutil::COLOR::RED);
+                            rlutil::locate(39, 25);
+                            cout << "* Se cancelo la restauracion de la venta *" << endl;
+                            rlutil::setColor(rlutil::COLOR::WHITE);
+                            opc = 0;
+
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+
+                        default:
+                            break;
+                        }
+
+                        break;
+
+                    default:
+
+                        break;
+                    }
+
+                } while (opc != 0);
+
+
+            }
+            else {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << endl << "* La venta a restaurar no se encuentra eliminada *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                system("pause");
+            }
+        }
+        else {
+            if (pos == -1) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << endl << "* El ID de Venta buscado no existe *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            if (pos == -2) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                cout << endl << "* No se pudo abrir el archivo de Ventas *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+            }
+            
+        }
+    }
+    cout << endl;
+}
+
 
 void VentasManager::realizarBackup() 
 {
@@ -731,98 +1339,8 @@ void VentasManager::restaurarBackup()
 
 }
 
-void VentasManager::borrarVenta()
-{
-    int id;
-    int opc;
 
-    id = validarInt("Ingrese ID de Venta a borrar: ");
-    cout << endl; 
-
-    int pos = buscarVenta(id); 
-
-    if (pos >= 0) {
-        Venta reg;
-        reg = _archivo.leerVenta(pos);
-
-        cout << endl << "Venta a Borrar: " << endl;
-        mostrarVenta(reg);
-        cout << endl;
-
-        opc =  validarInt("Confirma que desea borrar esta venta? (1)Si - (2)No");
-
-        if (opc == 1) {
-            reg.setEliminado(true);
-            bool result = _archivo.sobreescribirVenta(reg, pos);
-            if (result) {
-                cout << "* La venta se ha borrado correctamente *" << endl;
-            }
-            else {
-                cout << "* No se pudo eliminar la venta *" << endl;
-            }
-        }
-        else {
-            cout << endl << "* Se cancelo el borrado de la venta *" << endl;
-        }
-
-    }
-    else {
-        cout << "* La venta buscada no existe *" << endl;
-    }
-
-}
-
-void VentasManager::restaurarVentaBorrada() {
-    int cantReg = _archivo.contarVentas();
-    if (cantReg == -1) {
-        cout << endl << "* Error de Archivo *" << endl;
-    }
-    else {
-        int id, pos, opc;
-        id = validarInt("Ingrese el ID de la Venta: ");
-        system("cls");
-        
-        pos = buscarVenta(id);
-        if (pos == -1) {
-            cout << endl << "* No Existe ese ID de Venta *" << endl << endl;
-        }
-        if (pos >= 0) {
-            Venta reg;
-            reg = _archivo.leerVenta(pos);
-            if (reg.getEliminado() == true) {
-                cout << "Desea Restaurar el Registro? (1)Si (2)NO " << endl;
-                opc = validarInt("Seleccione una Opcion: ");
-                system("cls");
-
-                switch (opc) {
-                case 1: {
-                    reg.setEliminado(false);
-                    cout << endl;
-                    mostrarVenta(reg);
-                    bool restaurar = _archivo.sobreescribirVenta(reg, pos);
-                    if (restaurar == true) {
-                        cout << endl << setw(25) << " " << "* Registro Restaurado con Exito *" << endl << endl;
-                    }
-                    else {
-                        cout << endl << "* No se Pudo Restaurar el Registro *" << endl;
-                    }
-                        system("pause");
-                }
-                case 2:
-                    break;
-                default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
-                    return;
-                }
-            }
-            else {
-                cout << endl << "* El Registro Se Restauro con Exito *" << endl << endl;
-                system("pause");
-            }
-        }
-    }
-    cout << endl;
-}
-
+//func Clientes
 
 int VentasManager::validarCliente(long long dni)
 {
@@ -858,7 +1376,6 @@ Cliente VentasManager::crearNuevoCliente()
     return c;
 }
 
-
 void VentasManager::mostrarClienteAsociado(int pos)
 {
     ClienteManager cm;
@@ -889,15 +1406,24 @@ std::string VentasManager::mostrarNombreCliente(long long dni)
 
 }
 
+//func Sucursales
+
 int VentasManager::validarSucursal(int id)
 {
     SucursalArchivo sa;
     int resultado = sa.buscarPosicion(id);
     if (resultado >= 0) {
-        return resultado;
+        Sucursal reg;
+        reg = sa.leerRegistro(resultado);
+        if (reg.getEstado() == true) {
+            return -2;//sucursal eliminada
+        }
+        else {
+            return resultado;
+        }
     }
     else {
-        return -1;
+        return -1; //sucursal no existe
     }
 }
 
@@ -907,7 +1433,9 @@ void VentasManager::mostrarSucursalAsociada(int pos)
     Sucursal aux;
 
     aux = sa.leerRegistro(pos); 
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     cout << "Sucursal asignada: " << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
     cout << "Id Sucursal: #" << aux.getIdSucursal() << endl;
     cout << "Nombre: " << aux.getNombre() << endl;
     cout << "Dirección: " << aux.getDireccion().toString();
@@ -930,16 +1458,25 @@ std::string VentasManager::mostrarNombreSucursal(int id)
     return valor;
 }
 
+//func Vendedores
+
 int VentasManager::validarVendedor(int nroLegajo)
 {
     VendedorArchivo va;
 
     int resultado = va.BuscarId(nroLegajo);
     if (resultado >= 0) {
-        return resultado;
+        Vendedor reg; 
+        reg = va.leerRegistro(resultado); 
+        if (reg.getEliminado() == true) {
+            return -2;//vendedor eliminado
+        }
+        else {
+            return resultado;
+        }
     }
     else {
-        return -1;
+        return -1; //vendedor no existe
     }
 }
 
@@ -950,7 +1487,9 @@ void VentasManager::mostrarVendedorAsociado(int pos)
     Vendedor aux; 
 
     aux = va.leerRegistro(pos);
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     cout << "Vendedor asignado: " << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
     aux.MostrarPersona();
     cout << endl;
     cout << "NRO LEGAJO: " << aux.getNroLegajo() << endl;
@@ -971,6 +1510,8 @@ std::string VentasManager::mostrarNombreVendedor(int nrolegajo)
     return valor;
 }
 
+//func Vehiculos
+
 bool VentasManager::validarVehiculo(int& id)
 {
     VehiculosArchivo va;
@@ -988,7 +1529,9 @@ bool VentasManager::validarVehiculo(int& id)
         }
         else {
             do {
+                rlutil::setColor(rlutil::COLOR::RED);
                 cout << "* El vehiculo no tiene stock y no puede ser vendido. *" << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
                 id = validarInt("* Ingrese un nuevo id de vehiculo: ");
                 resultado = validarVehiculo(id);
 
@@ -1000,7 +1543,9 @@ bool VentasManager::validarVehiculo(int& id)
     }
     else {
         do {
+                rlutil::setColor(rlutil::COLOR::RED);
             cout << "* El vehiculo ingresado no existe *" << endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
             id = validarInt("* Ingrese un nuevo id de vehiculo: ");
             resultado = validarVehiculo(id);
         } while (resultado == false);
@@ -1017,13 +1562,14 @@ void VentasManager::mostrarVehiculoAsociado(int id)
     int pos = va.buscarRegistro(id);
 
     aux = va.leerRegistro(pos); 
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     cout << "Vehiculo vendido: " << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
     cout << "ID Vehiculo: " << aux.getIdVehiculo() << endl;
     cout << "Marca y Modelo: " << aux.getMarca() << " " << aux.getModelo() << endl;
     cout << "Version: " << aux.getVersion() << endl;
     cout << "Color: " << aux.getColor() << endl;
     cout << "Año de fabricación: " << aux.getAnioFabricacion() << endl;
-    //cout << "Stock actualizado: " << aux.getStock() << endl;
     cout << "Precio unidad: $" << formatearNumero(aux.getPrecioUnidad());
     cout << endl;
 }
@@ -1052,6 +1598,8 @@ float VentasManager::obtenerPrecioVehiculo(int id)
     return aux.getPrecioUnidad();
 }
 
+//calc auxiliares
+
 float VentasManager::calcularPrecioTotal(float gastos, float precio)
 {
     return gastos + precio;
@@ -1076,91 +1624,3 @@ std::string VentasManager::formatearNumero(double numero)
     return parteEnteraFormateada + parteDecimal;
 }
 
-void VentasManager::buscadorDeVentas()
-{
-    int cantReg = _archivo.contarVentas();
-    if (cantReg == -1) {
-        cout << endl << "* Error de Archivo *" << endl;
-    }
-    else {
-        int opc;
-        cout << "- Buscar Venta -" << endl;
-        cout << "-------------------" << endl;
-        cout << "1) Por ID " << endl;
-        cout << "2) Por Fecha de Venta " << endl;
-        cout << endl;
-        cout << "0) Salir " << endl << endl;
-        opc = validarInt("Opcion: ");
-        system("cls");
-        switch (opc) {
-        
-        case 1:buscarVentaPorID();
-            break;
-        case 2:buscarVentaPorFecha();
-            break;
-        case 0:
-            break;
-
-        default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
-            return;
-        }
-    }
-    cout << endl;
-}
-
-void VentasManager::buscarVentaPorID()
-{
-    int id, pos; 
-    id = validarInt("Ingrese el ID a buscar: ");
-    cout << endl;
-    pos = buscarVenta(id);
-    if (pos == -1) {
-        cout << endl << "* No se Encontraron Registros *" << endl;
-    }
-    if (pos >= 0) {
-        Venta reg;
-        reg = _archivo.leerVenta(pos);
-        if (reg.getEliminado() == false) {
-            mostrarVenta(reg);
-            cout << endl;
-        }
-        else {
-            cout << "* El Registro se Encuentra Eliminado *" << endl;
-        }
-    }
-    cout << endl;
-}
-
-void VentasManager::buscarVentaPorFecha()
-{
-    Fecha f;
-    Venta reg;
-    int cantReg, contador = 0;
-
-    cout << "Ingrese fecha a buscar:" << endl;
-    f.Cargar();
-    cout << endl;
-
-    cantReg = _archivo.contarVentas();
-    for (int i = 0; i < cantReg; i++) {
-        reg = _archivo.leerVenta(i);
-        if (reg.getEliminado() == false && reg.getFechaVenta().getAnio() == f.getAnio() && reg.getFechaVenta().getMes() == f.getMes() && reg.getFechaVenta().getDia() == f.getDia()) {
-            if (contador == 0) {
-                encabezadoListadoVentas();
-                mostrarVentaEnLinea(reg);
-                contador++;
-            }
-            else {
-                mostrarVentaEnLinea(reg);
-                contador++;
-
-            }
-        }
-    }
-    if (contador == 0) {
-        cout << "* No hay ventas para la fecha buscada * " << endl;
-    }
-
-}
-
- 
