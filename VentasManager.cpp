@@ -324,7 +324,7 @@ Venta VentasManager::crearVenta()
     cout << endl;
     
     //Validacion Sucursal
-    idSucursal = validarInt("* Ingrese ID de Sucursal: ");
+    idSucursal = validarInt("* INGRESE ID DE SUCURSAL: ");
     cout << endl;
     
     int posSucursal = validarSucursal(idSucursal);
@@ -356,7 +356,7 @@ Venta VentasManager::crearVenta()
 
     
     //Validacion Vendedor
-    nroLegajo = validarInt("* Ingrese Legajo del Vendedor: ");
+    nroLegajo = validarInt("* INGRESE LEGAJO DEL VENDEDOR: ");
     cout << endl; 
 
     int posVendedor = validarVendedor(nroLegajo);
@@ -387,7 +387,7 @@ Venta VentasManager::crearVenta()
     cout << endl;
     
     //Validacion Vehiculo
-    idVehiculo = validarInt("* Ingrese ID del Vehiculo adquirido: ");
+    idVehiculo = validarInt("* INGRESE ID DEL VEHICULO ADQUIRIDO: ");
     cout << endl;
 
     bool vehiculoDisponible = validarVehiculo(idVehiculo);
@@ -399,7 +399,7 @@ Venta VentasManager::crearVenta()
     cout << endl; 
     
     //carga Datos Administrativos
-    gastos = pedirNumeroFloat("* Ingrese Gastos Administrativos: $");
+    gastos = pedirNumeroFloat("* INGRESE GASTOS ADMINISTRATIVOS: $");
     reg.setGastosAdm(gastos); 
 
     //mostrar Resumen final de la Venta
@@ -711,6 +711,7 @@ void VentasManager::buscadorDeVentas()
         rlutil::setColor(rlutil::COLOR::RED);
         cout << endl << "* Error de Archivo *" << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
+        system("pause");
     }
     else {
         int opcion = 1, y = 0;
@@ -785,12 +786,23 @@ void VentasManager::buscadorDeVentas()
 void VentasManager::buscarVentaPorID()
 {
     int id, pos;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
+
     id = validarInt("Ingrese el ID a buscar: ");
     cout << endl;
+
     pos = buscarVenta(id);
+
     if (pos == -1) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se Encontraron Registros *" << endl;
+        cout << endl << "* No se encontraron ventas con el ID buscado *" << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     if (pos >= 0) {
@@ -802,11 +814,12 @@ void VentasManager::buscarVentaPorID()
         }
         else {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "* El Registro se Encuentra Eliminado *" << endl;
+            cout << "* La venta buscada se encuentra eliminada *" << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
     }
     cout << endl;
+    rlutil::hidecursor();
 }
 
 void VentasManager::buscarVentaPorFecha()
@@ -815,8 +828,14 @@ void VentasManager::buscarVentaPorFecha()
     Venta reg;
     int cantReg, contador = 0;
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
-    cout << "Ingrese fecha a buscar:" << endl;
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
+
+    cout << "Ingrese fecha a buscar:" << endl;
     f.Cargar();
     cout << endl;
 
@@ -843,6 +862,7 @@ void VentasManager::buscarVentaPorFecha()
     }
 
     cout << endl;
+    rlutil::hidecursor();
 }
 
 
