@@ -15,74 +15,131 @@ VehiculosManager::VehiculosManager() : _vehiculosArchivo("Vehiculos.dat")
 
 }
 
-void VehiculosManager::tituloVehiculo() {
-    cout << left;
-    cout << setw(26) << " " << "- Datos del Vehiculo -" << endl;
-    cout << "-----------------------------------------------------------------------------------" << endl;
-    cout << setw(4) << "ID ";
-    cout << setw(10) << "Marca ";
-    cout << setw(14) << "Modelo ";
-    cout << setw(12) << "Version ";
-    cout << setw(10) << "Color ";
-    cout << setw(8) << "Año ";
-    cout << setw(8) << "Stock ";
-    cout << setw(20) << "Precio por Unidad ";
-    cout << endl;
-
-}
-
 void VehiculosManager::Menu() {
-    int opc;
+
+    int opc = 1;
+    int y = 0;
+    system("cls");
+    rlutil::hidecursor();
+
     do {
-        system("cls");
-        cout << "----- Menu Vehiculos -----" << endl;
-        cout << "--------------------------" << endl;
-        cout << "1) Cargar " << endl;
-        cout << "2) Listar " << endl;
-        cout << "3) Buscar " << endl;
-        cout << "4) Editar " << endl;
-        cout << "5) Eliminar registro" << endl;
-        cout << "6) Reestablecer registro " << endl;
-        cout << "7) Realizar Backup " << endl;
-        cout << "8) Restaurar Backup " << endl;
-        cout << "0) Regresar al Menu Principal " << endl;
-        cout << "-----------------------------" << endl;
-        opc = validarInt("Selecione una Opcion: ");
-        system("cls");
-        
-        switch (opc) {
-        case 1: agregarVehiculo();
+
+        rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
+        rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+        rlutil::locate(35, 9);
+        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        rlutil::locate(45, 11);
+        cout << "* Modulo de VEHICULOS *" << endl;
+        showItem(" Cargar vehiculo ", 47, 14, y == 0);
+        showItem(" Listado de vehiculos ", 47, 15, y == 1);
+        showItem(" Buscar vehiculo ", 47, 16, y == 2);
+        showItem(" Editar vehiculo ", 47, 17, y == 3);
+        showItem(" Eliminar vehiculo ", 47, 18, y == 4);
+        showItem(" Recuperar vehiculo eliminado", 47, 19, y == 5);
+        showItem(" Backup de archivo de Vehiculos ", 47, 21, y == 7);
+        showItem(" Restauracion de backup de Vehiculos ", 47, 22, y == 8);
+        showItem2("Volver al menu principal ", 47, 24, y == 10);
+
+
+        switch (rlutil::getkey()) {
+        case 14: //UP
+            rlutil::locate(49, 14 + y);
+            cout << " " << endl;
+            y--;
+            if (y < 0) {
+                y = 0;
+            }
+            if (y == 6 || y == 9) {
+                y--;
+            }
             break;
-        case 2: listarVehiculos();
+        case 15: //DOWN
+            rlutil::locate(49, 14 + y);
+            cout << " " << endl;
+            y++;
+            if (y > 10) {
+                y = 10;
+            }
+            if (y == 6 || y == 9) {
+                y++;
+            }
             break;
-        case 3: buscarVehiculo();
+        case 1: //ENTER
+
+            switch (y) {
+            case 0:
+                system("cls");
+                agregarVehiculo();
+                system("pause");
+                system("cls");
+                break;
+            case 1:
+                system("cls");
+                listarVehiculos();
+                system("cls");
+                break;
+            case 2:
+                system("cls");
+                buscarVehiculo();
+                system("cls");
+                break;
+            case 3:
+                system("cls");
+                editarVehiculo();
+                system("cls");
+                break;
+            case 4:
+                system("cls");
+                eliminarVehiculo();
+                system("cls");
+                break;
+            case 5:
+                system("cls");
+                restaurarVehiculo();
+                system("cls");
+                break;
+
+            case 7:
+                system("cls");
+                realizarBackup();
+                system("cls");
+                break;
+            case 8:
+                system("cls");
+                restaurarBackup();
+                system("cls");
+                break;
+            case 10:
+                opc = 0;
+                system("cls");
+                break;
+
+            default:
+                break;
+            }
+
             break;
-        case 4: editarVehiculo();
+
+        default:
+
             break;
-        case 5: eliminarVehiculo();
-            break;
-        case 6: resturarVehiculo();
-            break;
-        case 7: realizarBackup();
-            break;
-        case 8: restaurarBackup();
-            break;
-        case 0:
-            break;
-        default:cout << endl << "* Selecione una Opcion Correcta! *" << endl << endl;;
-            system("pause");
         }
     } while (opc != 0);
+
 }
 
 void VehiculosManager::agregarVehiculo() {
     if (_vehiculosArchivo.guardarRegistro(cargarVehiculo())) {
-        cout << "* Registro Agregado! *" << endl;
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
+        cout << endl << "* El vehiculo se guardó correctamente *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
-        cout << "* No se Pudo Agregar el Registro *" << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se pudo guardar el vehiculo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
-    system("pause");
 }
 
 Vehiculo VehiculosManager::cargarVehiculo() {
@@ -91,53 +148,105 @@ Vehiculo VehiculosManager::cargarVehiculo() {
     float precio;
     Fecha año;
     VehiculosArchivo archivo;
+    Vehiculo reg;
+
     int cantReg = archivo.contarRegistros();
     if (cantReg == -1) {
         cantReg = 0;
-        cout << "* Archivo Nuevo *" << endl;
     }
-    Vehiculo reg;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VEHICULOS *" << endl << endl;
+    cout << "Carga de nuevo vehiculo" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
     id = ++cantReg;
-    cout << "- Ingrese Los Datos del Vehiculo -" << endl;
-    cout << "- ID: ";
-    cout << id << endl;
+    cout << "ID: # " << id << endl << endl;
     reg.setIdVehiculo(id);
-    cout << "- Marca: ";
+
+    rlutil::showcursor();
+
+    cout << "* MARCA: ";
     getline(cin, marca);
     reg.setMarca(marca);
-    cout << "- Modelo: ";
+    cout << endl;
+
+    cout << "* MODELO: ";
     getline(cin, modelo);
     reg.setModelo(modelo);
-    cout << "- Version: ";
+    cout << endl;
+
+    cout << "* VERSION: ";
     getline(cin, version);
     reg.setVersion(version);
-    cout << "- Color: ";
+    cout << endl;
+
+    cout << "* COLOR: ";
     getline(cin, color);
     reg.setColor(color);
+    cout << endl;
+
     while (true) {
-        anio = validarInt("- Ingrese el Año de Fabricacion: ");
+        anio = validarInt("* INGRESE EL AÑO DE FABRICACION: ");
         
         if (anio > año.obtenerAnioActual()) {
-            cout << "* El Año de Fabricacion No puede ser Mayor al Año Actual *" << endl;
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* El año de fabricacion no puede ser mayor al año actual *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            cout << endl;
         }
         if (anio < 2000) {
-            cout << "* El Año de Fabricacion No puede ser Menor a 2000 *" << endl;
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* El año de fabricacion no puede ser menor a 2000 *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            cout << endl;
         }
         if (anio <= año.obtenerAnioActual() && anio >= 2000) {
             break;
         }
     }
     reg.setAnioFabricacion(anio);
-    stock = validarInt("- Stock: ");
+    cout << endl;
+
+    stock = validarInt("* STOCK: ");
     reg.setStock(stock);
-    precio = validarInt("- Precio por Unidad: $ ");
+    cout << endl;
+
+    precio = validarInt("* PRECIO POR UNIDAD: $ ");
     reg.setPrecioUnidad(precio);
+    cout << endl;
+
     reg.setEstado(true);
+
+    rlutil::hidecursor();
+
     return reg;
+}
+
+void VehiculosManager::tituloVehiculo() 
+{
+    cout << left;
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    cout << setw(27) << " " << "* Listado de Vehiculos *" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    
+    cout << setw(4) << "ID ";
+    cout << setw(10) << "MARCA ";
+    cout << setw(14) << "MODELO ";
+    cout << setw(12) << "VERSION ";
+    cout << setw(10) << "COLOR ";
+    cout << setw(8) << "AÑO ";
+    cout << setw(8) << "STOCK ";
+    cout << setw(20) << "PRECIO POR UNIDAD ";
+    cout << endl;
+    cout << "-----------------------------------------------------------------------------------" << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
 }
 
 void VehiculosManager::mostrarVehiculo(Vehiculo reg) {
     if (reg.getEstado() == true) {
+        rlutil::setColor(rlutil::COLOR::WHITE);
         cout << left;
         cout << setw(4) << reg.getIdVehiculo();
         cout << setw(10) << reg.getMarca();
@@ -150,43 +259,90 @@ void VehiculosManager::mostrarVehiculo(Vehiculo reg) {
         cout << setw(2) << "$ " << setw(18) << numeroFormateado;
         cout << endl;
     }
-    else {
-        cout << reg.getIdVehiculo() << "   Este Registro se Encuentra Eliminado! " << endl;
-    }
 }
+
+
 
 void VehiculosManager::listarVehiculos() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << endl << "* Error de Archivo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg == 0) {
-        cout << endl << "* No Hay Registros para Mostrar *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        cout << endl << "* No hay vehiculos en el inventario *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg > 0) {
-        int opc;
+        int opcion = 1, y = 0;
         do {
-            system("cls");
-            cout << "- Como desea Visualizar los Registros? " << endl;
-            cout << " 1) por ID " << endl;
-            cout << " 2) Por Precio " << endl;
-            cout << " 0) Regresar " << endl;
-            opc = validarInt("- Seleccione una opcion: ");
-            system("cls");
-            
-            switch (opc) {
-            case 1: listarPorId();
+            rlutil::locate(39, 9);
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            cout << "* ¿Como desea ordenar el listado de Vehiculos? *" << endl;
+            showItem(" por ID de vehiculo ", 51, 11, y == 0);
+            showItem(" por Precio ", 51, 12, y == 1);
+            showItem2(" Volver ", 51, 14, y == 3);
+
+
+            switch (rlutil::getkey()) {
+            case 14: //UP
+                rlutil::locate(49, 11 + y);
+                cout << " " << endl;
+                y--;
+                if (y < 0) {
+                    y = 0;
+                }
+                if (y == 2) {
+                    y--;
+                }
                 break;
-            case 2: listarPorPrecio();
+            case 15: //DOWN
+                rlutil::locate(49, 11 + y);
+                cout << " " << endl;
+                y++;
+                if (y > 3) {
+                    y = 3;
+                }
+                if (y == 2) {
+                    y++;
+                }
                 break;
-            case 0:
+            case 1: //ENTER
+
+                switch (y) {
+                case 0:
+                    system("cls");
+                    listarPorId();
+                    system("pause");
+                    system("cls");
+                    break;
+                case 1:
+                    system("cls");
+                    listarPorPrecio();
+                    system("pause");
+                    system("cls");
+                    break;
+                case 3:
+                    opcion = 0;
+                    system("cls");
+                    break;
+
+                default:
+                    break;
+                }
+
                 break;
-            default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
+
+            default:
+
                 break;
             }
-        } while (opc != 0);
+
+        } while (opcion != 0);
 
     }
     cout << endl;
@@ -195,18 +351,7 @@ void VehiculosManager::listarVehiculos() {
 void VehiculosManager::listarPorId() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     Vehiculo reg;
-    cout << left;
-    cout << setw(26) << " " << "- Datos de los Vehiculos -" << endl;
-    cout << "-----------------------------------------------------------------------------------" << endl;
-    cout << setw(4) << "ID ";
-    cout << setw(10) << "Marca ";
-    cout << setw(14) << "Modelo ";
-    cout << setw(12) << "Version ";
-    cout << setw(10) << "Color ";
-    cout << setw(8) << "Año ";
-    cout << setw(8) << "Stock ";
-    cout << setw(20) << "Precio por Unidad ";
-    cout << endl;
+    tituloVehiculo();
     for (int i = 0; i < cantReg; i++) {
         reg = _vehiculosArchivo.leerRegistro(i);
         if (reg.getEstado() == true) {
@@ -221,18 +366,7 @@ void VehiculosManager::listarPorPrecio() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     Vehiculo reg, aux;
     vector<Vehiculo> ordenado;
-    cout << left;
-    cout << setw(26) << " " << "- Datos de los Vehiculos -" << endl;
-    cout << "-----------------------------------------------------------------------------------" << endl;
-    cout << setw(4) << "ID ";
-    cout << setw(10) << "Marca ";
-    cout << setw(14) << "Modelo ";
-    cout << setw(12) << "Version ";
-    cout << setw(10) << "Color ";
-    cout << setw(8) << "Año ";
-    cout << setw(8) << "Stock ";
-    cout << setw(20) << "Precio por Unidad ";
-    cout << endl;
+    tituloVehiculo();
     for (int i = 0; i < cantReg; i++) {
         reg = _vehiculosArchivo.leerRegistro(i);
         ordenado.push_back(reg);
@@ -255,61 +389,134 @@ void VehiculosManager::listarPorPrecio() {
     system("pause");
 } 
 
+
+
 void VehiculosManager::buscarVehiculo() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << endl << "* Error de Archivo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg == 0) {
-        cout << endl << "* No Hay Registros para Buscar *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* El archivo de vehiculos esta vacío *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
         system("pause");
     }
     if (cantReg > 0) {
-        int opc;
-        do {
-            system("cls");
-            cout << "---- Buscar Vehiculo ----" << endl;
-            cout << "-------------------------" << endl;
-            cout << "1) Por ID " << endl;
-            cout << "2) Por Marca " << endl;
-            cout << "3) Por Modelo " << endl;
-            cout << "4) Por Año de Fabricacion " << endl;
-            cout << "5) Por Color " << endl;
-            cout << "0) Regresar " << endl;
-            cout << "------------------------" << endl;
-            opc = validarInt("Ingrese una Opcion: ");
-            system("cls");
-            
-            switch (opc) {
-            case 1:buscarPorID();
-                break;
-            case 2:buscarPorMarca();
-                break;
-            case 3:buscarPorModelo();
-                break;
-            case 4:buscarPorAnio();
-                break;
-            case 5:buscarPorColor();
-                break;
-            case 0:
-                break;
-            default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
-                break;
-            }
-        } while (opc != 0);
+
+		int opcion = 1, y = 0;
+		do {
+			rlutil::locate(44, 9);
+			rlutil::setColor(rlutil::COLOR::WHITE);
+			cout << "* Buscador de Vehiculos *" << endl;
+			showItem(" Buscar por ID ", 45, 11, y == 0);
+			showItem(" Buscar por Marca ", 45, 12, y == 1);
+			showItem(" Buscar por Modelo ", 45, 13, y == 2);
+			showItem(" Buscar por Año de fabricacion ", 45, 14, y == 3);
+			showItem(" Buscar por Color ", 45, 15, y == 4);
+			showItem2(" Volver ", 51, 17, y == 6);
+
+
+			switch (rlutil::getkey()) {
+			case 14: //UP
+				rlutil::locate(43, 11 + y);
+				cout << " " << endl;
+				y--;
+				if (y < 0) {
+					y = 0;
+				}
+				if (y == 5) {
+					y--;
+				}
+				break;
+			case 15: //DOWN
+				rlutil::locate(43, 11 + y);
+				cout << " " << endl;
+				y++;
+				if (y > 6) {
+					y = 6;
+				}
+				if (y == 5) {
+					y++;
+				}
+				break;
+			case 1: //ENTER
+
+				switch (y) {
+				case 0:
+					system("cls");
+					buscarPorID();
+					system("pause");
+					system("cls");
+					break;
+				case 1:
+					system("cls");
+					buscarPorMarca();
+					system("pause");
+					system("cls");
+					break;
+				case 2:
+					system("cls");
+					buscarPorModelo();
+					system("pause");
+					system("cls");
+					break;
+				case 3:
+					system("cls");
+					buscarPorAnio();
+					system("pause");
+					system("cls");
+					break;
+				case 4:
+					system("cls");
+					buscarPorColor();
+					system("pause");
+					system("cls");
+					break;
+				case 6:
+					opcion = 0;
+					system("cls");
+					break;
+
+				default:
+					break;
+				}
+
+				break;
+
+			default:
+
+				break;
+			}
+
+		} while (opcion != 0);
     }
     cout << endl;
 }
 
 void VehiculosManager::buscarPorID() {
     int id, pos;
-    id = validarInt("- Ingrese el ID: ");
-    system("cls");
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
+
+    id = validarInt("Ingrese el ID a buscar: ");
+    cout << endl;
+
     pos = _vehiculosArchivo.buscarRegistro(id);
     
     if (pos == -1) {
-        cout << endl << "* No se Encontraron Registros *" << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se encontraron vehiculos con el ID buscado *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     if (pos >= 0) {
         Vehiculo reg;
@@ -321,11 +528,13 @@ void VehiculosManager::buscarPorID() {
             cout << endl;
         }
         else {
-            cout << endl << "* El Registro se Encuentra Eliminado *" << endl;
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* La venta buscada se encuentra eliminada *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
         }
     }
     cout << endl;
-    system("pause");
+    rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorMarca() {
@@ -333,8 +542,16 @@ void VehiculosManager::buscarPorMarca() {
     int cantReg;
     Vehiculo reg;
     vector<Vehiculo> resultado;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
     
-    cout << "- Ingrese la Marca: ";
+    cout << "Ingrese la Marca a buscar: ";
     getline(cin, marca);
     
     cadena1 = aMinuscula(marca);
@@ -349,7 +566,9 @@ void VehiculosManager::buscarPorMarca() {
         }
     }
     if (resultado.empty() == true) {
-        cout << endl << "* No se encontraron Registros *" << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se encontraron vehiculos de la marca buscada *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         cout << endl;
@@ -359,7 +578,7 @@ void VehiculosManager::buscarPorMarca() {
         }
     }
     cout << endl;
-    system("pause");
+    rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorModelo() {
@@ -367,9 +586,18 @@ void VehiculosManager::buscarPorModelo() {
     int cantReg;
     Vehiculo reg;
     vector<Vehiculo> resultado;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
     
-    cout << "- Ingrese el Modelo: ";
+    cout << "Ingrese el Modelo a buscar: ";
     getline(cin, modelo);
+
     cadena1 = aMinuscula(modelo);
     cantReg = _vehiculosArchivo.contarRegistros();
     for (int i = 0; i < cantReg; i++) {
@@ -381,8 +609,11 @@ void VehiculosManager::buscarPorModelo() {
             }
         }
     }
+
     if (resultado.empty() == true) {
-        cout << endl << "* No se encontraron Registros *" << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se encontraron vehiculos del modelo buscado *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         cout << endl;
@@ -392,7 +623,7 @@ void VehiculosManager::buscarPorModelo() {
         }
     }
     cout << endl;
-    system("pause");
+    rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorAnio() {
@@ -400,22 +631,35 @@ void VehiculosManager::buscarPorAnio() {
     Fecha año;
     Vehiculo reg;
     vector<Vehiculo> resultado;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
     
     while (true) {
-        anio = validarInt("- Ingrese el Año de Fabricacion: ");
+        anio = validarInt("Ingrese el Año de Fabricacion a buscar: ");
         
         if (anio > año.obtenerAnioActual()) {
-            cout << "* El Año de Fabricacion No puede ser Mayor al Año Actual *" << endl;
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* El año de fabricacion no puede ser mayor al año actual *" << endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
         }
         if (anio < 2000) {
-            cout << "* El Año de Fabricacion No puede ser Menor a 2000 *" << endl;
+            rlutil::setColor(rlutil::COLOR::RED);
+            cout << "* El año de fabricacion no puede ser menor a 2000 *" << endl;
+            rlutil::setColor(rlutil::COLOR::RED);
         }
         if (anio <= año.obtenerAnioActual() && anio >= 2000) {
             break;
         }
     }
-    system("cls");
+
     cantReg = _vehiculosArchivo.contarRegistros();
+
     for (int i = 0; i < cantReg; i++) {
         reg = _vehiculosArchivo.leerRegistro(i);
         if (reg.getEstado() == true) {
@@ -425,7 +669,9 @@ void VehiculosManager::buscarPorAnio() {
         }
     }
     if (resultado.empty() == true) {
-        cout << endl << "* No se encontraron Registros *" << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se encontraron vehiculos del Año buscado *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         cout << endl;
@@ -435,7 +681,7 @@ void VehiculosManager::buscarPorAnio() {
         }
     }
     cout << endl;
-    system("pause");
+    rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorColor() {
@@ -443,13 +689,19 @@ void VehiculosManager::buscarPorColor() {
     string color, cadena1, cadena2;
     Vehiculo reg;
     vector<Vehiculo> resultado;
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    cout << "* Modulo de VENTAS *" << endl << endl;
+    cout << "Buscador de ventas" << endl << endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
+    rlutil::showcursor();
     
-    color = validarString("- Ingrese el Color: ");
-    system("cls");
+    color = validarString("Ingrese el Color a buscar: ");
     
     cadena1 = aMinuscula(color);
     cantReg = _vehiculosArchivo.contarRegistros();
-    
     for (int i = 0; i < cantReg; i++) {
         reg = _vehiculosArchivo.leerRegistro(i);
         if (reg.getEstado() == true) {
@@ -459,8 +711,11 @@ void VehiculosManager::buscarPorColor() {
             }
         }
     }
+
     if (resultado.empty() == true) {
-        cout << endl << "* No se encontraron Registros *" << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        cout << endl << "* No se encontraron ventas con el Color buscado *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         cout << endl;
@@ -470,9 +725,11 @@ void VehiculosManager::buscarPorColor() {
         }
     }
     cout << endl;
-    system("pause");
+    rlutil::hidecursor();
 }
 
+
+//TODO: me quede aca 1/8
 void VehiculosManager::editarVehiculo() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
@@ -597,6 +854,8 @@ void VehiculosManager::editarVehiculo() {
     system("pause");
 }
 
+
+
 void VehiculosManager::eliminarVehiculo() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
@@ -654,7 +913,7 @@ void VehiculosManager::eliminarVehiculo() {
     cout << endl;
 }
 
-void VehiculosManager::resturarVehiculo() {
+void VehiculosManager::restaurarVehiculo() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
         cout << endl << "* Error de Archivo *" << endl << endl;
@@ -707,6 +966,8 @@ void VehiculosManager::resturarVehiculo() {
     cout << endl;
 }
 
+
+
 void VehiculosManager::realizarBackup() {
     string origen = "Vehiculos.dat";
     string copia = "Vehiculos.bkp";
@@ -719,15 +980,19 @@ void VehiculosManager::realizarBackup() {
 
     rlutil::locate(35, 10);
     if (resultado == 0) {
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
         cout << "* Backup realizado con exito *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
+        rlutil::setColor(rlutil::COLOR::RED);
         cout << "* Hubo un error al copiar el archivo *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
 
     rlutil::locate(35, 11);
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
-    rlutil::anykey();
+    system("pause");
 }
 
 void VehiculosManager::restaurarBackup() {
@@ -742,10 +1007,14 @@ void VehiculosManager::restaurarBackup() {
 
     rlutil::locate(35, 10);
     if (resultado == 0) {
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
         cout << "* Restauracion de backup realizada con exito *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
+        rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
         cout << "* Hubo un error al copiar el archivo *" << endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
 
     rlutil::locate(35, 11);
