@@ -1,14 +1,12 @@
 #include "VehiculosManager.h"
-#include "FuncionesGenerales.h"
-#include "Fecha.h"
-#include <cstdlib>
-#include <iomanip>
 #include <iostream>
-#include <sstream>
-#include <string>
+#include "Fecha.h"
+#include <iomanip>
+#include <string>  
 #include <vector>
 #include "rlutil.h"
-using namespace std;
+#include "FuncionesGenerales.h"
+//using namespace std;
 
 VehiculosManager::VehiculosManager() : _vehiculosArchivo("Vehiculos.dat")
 {
@@ -27,10 +25,10 @@ void VehiculosManager::Menu() {
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        std::cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(45, 11);
-        cout << "* Modulo de VEHICULOS *" << endl;
+        std::cout << "* Modulo de VEHICULOS *" << std::endl;
         showItem(" Cargar vehiculo ", 47, 14, y == 0);
         showItem(" Listado de vehiculos ", 47, 15, y == 1);
         showItem(" Buscar vehiculo ", 47, 16, y == 2);
@@ -45,7 +43,7 @@ void VehiculosManager::Menu() {
         switch (rlutil::getkey()) {
         case 14: //UP
             rlutil::locate(49, 14 + y);
-            cout << " " << endl;
+            std::cout << " " << std::endl;
             y--;
             if (y < 0) {
                 y = 0;
@@ -56,7 +54,7 @@ void VehiculosManager::Menu() {
             break;
         case 15: //DOWN
             rlutil::locate(49, 14 + y);
-            cout << " " << endl;
+            std::cout << " " << std::endl;
             y++;
             if (y > 10) {
                 y = 10;
@@ -132,18 +130,18 @@ void VehiculosManager::Menu() {
 void VehiculosManager::agregarVehiculo() {
     if (_vehiculosArchivo.guardarRegistro(cargarVehiculo())) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* El vehiculo se guardó correctamente *" << endl << endl;
+        std::cout << std::endl << "* El vehiculo se guardó correctamente *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se pudo guardar el vehiculo *" << endl << endl;
+        std::cout << std::endl << "* No se pudo guardar el vehiculo *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
 }
 
 Vehiculo VehiculosManager::cargarVehiculo() {
-    string marca, modelo, version, color;
+    std::string marca, modelo, version, color;
     int id, anio, stock;
     float precio;
     Fecha año;
@@ -157,65 +155,65 @@ Vehiculo VehiculosManager::cargarVehiculo() {
 
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     rlutil::locate(10, 1);
-    cout << "* Modulo de VEHICULOS *" << endl << endl;
-    cout << "Carga de nuevo vehiculo" << endl << endl;
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Carga de nuevo vehiculo" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     id = ++cantReg;
-    cout << "ID: # " << id << endl << endl;
+    std::cout << "ID: # " << id << std::endl << std::endl;
     reg.setIdVehiculo(id);
 
     rlutil::showcursor();
 
-    cout << "* MARCA: ";
-    getline(cin, marca);
+    std::cout << "* MARCA: ";
+    getline(std::cin, marca);
     reg.setMarca(marca);
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "* MODELO: ";
-    getline(cin, modelo);
+    std::cout << "* MODELO: ";
+    getline(std::cin, modelo);
     reg.setModelo(modelo);
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "* VERSION: ";
-    getline(cin, version);
+    std::cout << "* VERSION: ";
+    getline(std::cin, version);
     reg.setVersion(version);
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "* COLOR: ";
-    getline(cin, color);
+    std::cout << "* COLOR: ";
+    getline(std::cin, color);
     reg.setColor(color);
-    cout << endl;
+    std::cout << std::endl;
 
     while (true) {
         anio = validarInt("* INGRESE EL AÑO DE FABRICACION: ");
         
         if (anio > año.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "* El año de fabricacion no puede ser mayor al año actual *" << endl;
+            std::cout << "* El año de fabricacion no puede ser mayor al año actual *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
-            cout << endl;
+            std::cout << std::endl;
         }
         if (anio < 2000) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "* El año de fabricacion no puede ser menor a 2000 *" << endl;
+            std::cout << "* El año de fabricacion no puede ser menor a 2000 *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
-            cout << endl;
+            std::cout << std::endl;
         }
         if (anio <= año.obtenerAnioActual() && anio >= 2000) {
             break;
         }
     }
     reg.setAnioFabricacion(anio);
-    cout << endl;
+    std::cout << std::endl;
 
     stock = validarInt("* STOCK: ");
     reg.setStock(stock);
-    cout << endl;
+    std::cout << std::endl;
 
     precio = validarInt("* PRECIO POR UNIDAD: $ ");
     reg.setPrecioUnidad(precio);
-    cout << endl;
+    std::cout << std::endl;
 
     reg.setEstado(true);
 
@@ -226,39 +224,76 @@ Vehiculo VehiculosManager::cargarVehiculo() {
 
 void VehiculosManager::tituloVehiculo() 
 {
-    cout << left;
+    std::cout << std::left;
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
-    cout << setw(27) << " " << "* Listado de Vehiculos *" << endl << endl;
+    std::cout << std::setw(27) << " " << "* Listado de Vehiculos *" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::DARKGREY);
     
-    cout << setw(4) << "ID ";
-    cout << setw(10) << "MARCA ";
-    cout << setw(14) << "MODELO ";
-    cout << setw(12) << "VERSION ";
-    cout << setw(10) << "COLOR ";
-    cout << setw(8) << "AÑO ";
-    cout << setw(8) << "STOCK ";
-    cout << setw(20) << "PRECIO POR UNIDAD ";
-    cout << endl;
-    cout << "-----------------------------------------------------------------------------------" << endl;
+    std::cout << std::setw(4) << "ID ";
+    std::cout << std::setw(10) << "MARCA ";
+    std::cout << std::setw(14) << "MODELO ";
+    std::cout << std::setw(12) << "VERSION ";
+    std::cout << std::setw(10) << "COLOR ";
+    std::cout << std::setw(8) << "AÑO ";
+    std::cout << std::setw(8) << "STOCK ";
+    std::cout << std::setw(20) << "PRECIO POR UNIDAD ";
+    std::cout << std::endl;
+    std::cout << "-----------------------------------------------------------------------------------" << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 }
 
-void VehiculosManager::mostrarVehiculo(Vehiculo reg) {
+void VehiculosManager::mostrarVehiculoEnLinea(Vehiculo reg) {
     if (reg.getEstado() == true) {
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << left;
-        cout << setw(4) << reg.getIdVehiculo();
-        cout << setw(10) << reg.getMarca();
-        cout << setw(14) << reg.getModelo();
-        cout << setw(12) << reg.getVersion();
-        cout << setw(10) << reg.getColor();
-        cout << setw(8) << reg.getAnioFabricacion();
-        cout << setw(8) << reg.getStock();
-        string numeroFormateado = formatearNumero(reg.getPrecioUnidad());
-        cout << setw(2) << "$ " << setw(18) << numeroFormateado;
-        cout << endl;
+        std::cout << std::left;
+        std::cout << std::setw(4) << reg.getIdVehiculo();
+        std::cout << std::setw(10) << reg.getMarca();
+        std::cout << std::setw(14) << reg.getModelo();
+        std::cout << std::setw(12) << reg.getVersion();
+        std::cout << std::setw(10) << reg.getColor();
+        std::cout << std::setw(8) << reg.getAnioFabricacion();
+        std::cout << std::setw(8) << reg.getStock();
+        std::string numeroFormateado = formatearNumero(reg.getPrecioUnidad());
+        std::cout << std::setw(2) << "$ " << std::setw(18) << numeroFormateado;
+        std::cout << std::endl;
     }
+}
+
+void VehiculosManager::mostrarVehiculo(Vehiculo reg)
+{
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "ID: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << "# " << reg.getIdVehiculo() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Marca: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << reg.getMarca() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Modelo: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << reg.getModelo() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Version: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << reg.getVersion() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Color: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << reg.getColor() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Año de fabricación: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << reg.getAnioFabricacion() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Stock disponible: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << reg.getStock() << std::endl;
+    rlutil::setColor(rlutil::COLOR::DARKGREY);
+    std::cout << "Precio unidad: ";
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    std::cout << "$ " << formatearNumero(reg.getPrecioUnidad());
+    std::cout << std::endl;
 }
 
 
@@ -267,13 +302,13 @@ void VehiculosManager::listarVehiculos() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* Error de Archivo *" << endl << endl;
+        std::cout << std::endl << "* Error de Archivo *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg == 0) {
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << endl << "* No hay vehiculos en el inventario *" << endl << endl;
+        std::cout << std::endl << "* No hay vehiculos en el inventario *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
@@ -282,7 +317,7 @@ void VehiculosManager::listarVehiculos() {
         do {
             rlutil::locate(39, 9);
             rlutil::setColor(rlutil::COLOR::WHITE);
-            cout << "* ¿Como desea ordenar el listado de Vehiculos? *" << endl;
+            std::cout << "* ¿Como desea ordenar el listado de Vehiculos? *" << std::endl;
             showItem(" por ID de vehiculo ", 51, 11, y == 0);
             showItem(" por Precio ", 51, 12, y == 1);
             showItem2(" Volver ", 51, 14, y == 3);
@@ -291,7 +326,7 @@ void VehiculosManager::listarVehiculos() {
             switch (rlutil::getkey()) {
             case 14: //UP
                 rlutil::locate(49, 11 + y);
-                cout << " " << endl;
+                std::cout << " " << std::endl;
                 y--;
                 if (y < 0) {
                     y = 0;
@@ -302,7 +337,7 @@ void VehiculosManager::listarVehiculos() {
                 break;
             case 15: //DOWN
                 rlutil::locate(49, 11 + y);
-                cout << " " << endl;
+                std::cout << " " << std::endl;
                 y++;
                 if (y > 3) {
                     y = 3;
@@ -345,7 +380,7 @@ void VehiculosManager::listarVehiculos() {
         } while (opcion != 0);
 
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void VehiculosManager::listarPorId() {
@@ -355,17 +390,16 @@ void VehiculosManager::listarPorId() {
     for (int i = 0; i < cantReg; i++) {
         reg = _vehiculosArchivo.leerRegistro(i);
         if (reg.getEstado() == true) {
-            mostrarVehiculo(reg);
+            mostrarVehiculoEnLinea(reg);
         }
     }
-    cout << endl;
-    system("pause");
+    std::cout << std::endl;
 } 
 
 void VehiculosManager::listarPorPrecio() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     Vehiculo reg, aux;
-    vector<Vehiculo> ordenado;
+    std::vector<Vehiculo> ordenado;
     tituloVehiculo();
     for (int i = 0; i < cantReg; i++) {
         reg = _vehiculosArchivo.leerRegistro(i);
@@ -382,11 +416,10 @@ void VehiculosManager::listarPorPrecio() {
     }
     for (int i = 0; i < cantReg; i++) {
         if (ordenado[i].getEstado() == true) {
-            mostrarVehiculo(ordenado[i]);
+            mostrarVehiculoEnLinea(ordenado[i]);
         }
     }
-    cout << endl;
-    system("pause");
+    std::cout << std::endl;
 } 
 
 
@@ -395,13 +428,13 @@ void VehiculosManager::buscarVehiculo() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* Error de Archivo *" << endl << endl;
+        std::cout << std::endl << "* Error de Archivo *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg == 0) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* El archivo de vehiculos esta vacío *" << endl << endl;
+        std::cout << std::endl << "* El archivo de vehiculos esta vacío *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::RED);
         system("pause");
     }
@@ -411,19 +444,19 @@ void VehiculosManager::buscarVehiculo() {
 		do {
 			rlutil::locate(44, 9);
 			rlutil::setColor(rlutil::COLOR::WHITE);
-			cout << "* Buscador de Vehiculos *" << endl;
-			showItem(" Buscar por ID ", 45, 11, y == 0);
-			showItem(" Buscar por Marca ", 45, 12, y == 1);
-			showItem(" Buscar por Modelo ", 45, 13, y == 2);
-			showItem(" Buscar por Año de fabricacion ", 45, 14, y == 3);
-			showItem(" Buscar por Color ", 45, 15, y == 4);
+			std::cout << "* Buscador de Vehiculos *" << std::endl;
+			showItem("   Por ID ", 45, 11, y == 0);
+			showItem("   Por Marca ", 45, 12, y == 1);
+			showItem("   Por Modelo ", 45, 13, y == 2);
+			showItem("   Por Año de fabricacion ", 45, 14, y == 3);
+			showItem("   Por Color ", 45, 15, y == 4);
 			showItem2(" Volver ", 51, 17, y == 6);
 
 
 			switch (rlutil::getkey()) {
 			case 14: //UP
 				rlutil::locate(43, 11 + y);
-				cout << " " << endl;
+				std::cout << " " << std::endl;
 				y--;
 				if (y < 0) {
 					y = 0;
@@ -434,7 +467,7 @@ void VehiculosManager::buscarVehiculo() {
 				break;
 			case 15: //DOWN
 				rlutil::locate(43, 11 + y);
-				cout << " " << endl;
+				std::cout << " " << std::endl;
 				y++;
 				if (y > 6) {
 					y = 6;
@@ -494,7 +527,7 @@ void VehiculosManager::buscarVehiculo() {
 
 		} while (opcion != 0);
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void VehiculosManager::buscarPorID() {
@@ -502,57 +535,56 @@ void VehiculosManager::buscarPorID() {
 
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     rlutil::locate(10, 1);
-    cout << "* Modulo de VENTAS *" << endl << endl;
-    cout << "Buscador de ventas" << endl << endl;
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Buscador de vehiculos" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     rlutil::showcursor();
 
     id = validarInt("Ingrese el ID a buscar: ");
-    cout << endl;
+    std::cout << std::endl;
 
     pos = _vehiculosArchivo.buscarRegistro(id);
     
     if (pos == -1) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se encontraron vehiculos con el ID buscado *" << endl;
+        std::cout << std::endl << "* No se encontraron vehiculos con el ID buscado *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     if (pos >= 0) {
         Vehiculo reg;
         reg = _vehiculosArchivo.leerRegistro(pos);
         if (reg.getEstado() == true) {
-            cout << endl;
-            tituloVehiculo();
+            std::cout << std::endl;
             mostrarVehiculo(reg);
-            cout << endl;
+            std::cout << std::endl;
         }
         else {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "* La venta buscada se encuentra eliminada *" << endl;
+            std::cout << "* El vehiculo buscado se encuentra eliminado *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
     }
-    cout << endl;
+    std::cout << std::endl;
     rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorMarca() {
-    string marca, cadena1, cadena2;
+    std::string marca, cadena1, cadena2;
     int cantReg;
     Vehiculo reg;
-    vector<Vehiculo> resultado;
+    std::vector<Vehiculo> resultado;
 
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     rlutil::locate(10, 1);
-    cout << "* Modulo de VENTAS *" << endl << endl;
-    cout << "Buscador de ventas" << endl << endl;
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Buscador de vehiculos" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     rlutil::showcursor();
     
-    cout << "Ingrese la Marca a buscar: ";
-    getline(cin, marca);
+    std::cout << "Ingrese la Marca a buscar: ";
+    getline(std::cin, marca);
     
     cadena1 = aMinuscula(marca);
     cantReg = _vehiculosArchivo.contarRegistros();
@@ -567,36 +599,36 @@ void VehiculosManager::buscarPorMarca() {
     }
     if (resultado.empty() == true) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se encontraron vehiculos de la marca buscada *" << endl;
+        std::cout << std::endl << "* No se encontraron vehiculos de la marca buscada *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
-        cout << endl;
+        std::cout << std::endl;
         tituloVehiculo();
         for (size_t j = 0; j < resultado.size(); j++) {
-            mostrarVehiculo(resultado[j]);
+            mostrarVehiculoEnLinea(resultado[j]);
         }
     }
-    cout << endl;
+    std::cout << std::endl;
     rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorModelo() {
-    string modelo, cadena1, cadena2;
+    std::string modelo, cadena1, cadena2;
     int cantReg;
     Vehiculo reg;
-    vector<Vehiculo> resultado;
+    std::vector<Vehiculo> resultado;
 
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     rlutil::locate(10, 1);
-    cout << "* Modulo de VENTAS *" << endl << endl;
-    cout << "Buscador de ventas" << endl << endl;
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Buscador de vehiculos" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     rlutil::showcursor();
     
-    cout << "Ingrese el Modelo a buscar: ";
-    getline(cin, modelo);
+    std::cout << "Ingrese el Modelo a buscar: ";
+    getline(std::cin, modelo);
 
     cadena1 = aMinuscula(modelo);
     cantReg = _vehiculosArchivo.contarRegistros();
@@ -612,17 +644,17 @@ void VehiculosManager::buscarPorModelo() {
 
     if (resultado.empty() == true) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se encontraron vehiculos del modelo buscado *" << endl;
+        std::cout << std::endl << "* No se encontraron vehiculos del modelo buscado *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
-        cout << endl;
+        std::cout << std::endl;
         tituloVehiculo();
         for (size_t j = 0; j < resultado.size(); j++) {
-            mostrarVehiculo(resultado[j]);
+            mostrarVehiculoEnLinea(resultado[j]);
         }
     }
-    cout << endl;
+    std::cout << std::endl;
     rlutil::hidecursor();
 }
 
@@ -630,12 +662,12 @@ void VehiculosManager::buscarPorAnio() {
     int anio, cantReg;
     Fecha año;
     Vehiculo reg;
-    vector<Vehiculo> resultado;
+    std::vector<Vehiculo> resultado;
 
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     rlutil::locate(10, 1);
-    cout << "* Modulo de VENTAS *" << endl << endl;
-    cout << "Buscador de ventas" << endl << endl;
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Buscador de vehiculos" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     rlutil::showcursor();
@@ -645,12 +677,12 @@ void VehiculosManager::buscarPorAnio() {
         
         if (anio > año.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "* El año de fabricacion no puede ser mayor al año actual *" << endl;
+            std::cout << "* El año de fabricacion no puede ser mayor al año actual *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
         if (anio < 2000) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "* El año de fabricacion no puede ser menor a 2000 *" << endl;
+            std::cout << "* El año de fabricacion no puede ser menor a 2000 *" << std::endl;
             rlutil::setColor(rlutil::COLOR::RED);
         }
         if (anio <= año.obtenerAnioActual() && anio >= 2000) {
@@ -670,30 +702,30 @@ void VehiculosManager::buscarPorAnio() {
     }
     if (resultado.empty() == true) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se encontraron vehiculos del Año buscado *" << endl;
+        std::cout << std::endl << "* No se encontraron vehiculos del Año buscado *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
-        cout << endl;
+        std::cout << std::endl;
         tituloVehiculo();
         for (size_t j = 0; j < resultado.size(); j++) {
-            mostrarVehiculo(resultado[j]);
+            mostrarVehiculoEnLinea(resultado[j]);
         }
     }
-    cout << endl;
+    std::cout << std::endl;
     rlutil::hidecursor();
 }
 
 void VehiculosManager::buscarPorColor() {
     int cantReg;
-    string color, cadena1, cadena2;
+    std::string color, cadena1, cadena2;
     Vehiculo reg;
-    vector<Vehiculo> resultado;
+    std::vector<Vehiculo> resultado;
 
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     rlutil::locate(10, 1);
-    cout << "* Modulo de VENTAS *" << endl << endl;
-    cout << "Buscador de ventas" << endl << endl;
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Buscador de vehiculos" << std::endl << std::endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     rlutil::showcursor();
@@ -714,265 +746,748 @@ void VehiculosManager::buscarPorColor() {
 
     if (resultado.empty() == true) {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << endl << "* No se encontraron ventas con el Color buscado *" << endl;
+        std::cout << std::endl << "* No se encontraron ventas con el Color buscado *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
-        cout << endl;
+        std::cout << std::endl;
         tituloVehiculo();
         for (size_t j = 0; j < resultado.size(); j++) {
-            mostrarVehiculo(resultado[j]);
+            mostrarVehiculoEnLinea(resultado[j]);
         }
     }
-    cout << endl;
+    std::cout << std::endl;
     rlutil::hidecursor();
 }
 
 
-//TODO: me quede aca 1/8
-void VehiculosManager::editarVehiculo() {
+
+void VehiculosManager::editarVehiculo() 
+{
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+    std::cout << "Editar vehiculo" << std::endl << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
-        cout << endl << "* Error de Archivo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << std::endl << "* Error de Archivo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        system("pause");
     }
     if (cantReg == 0) {
-        cout << endl << "* No Hay Registros para Editar *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << std::endl << "* No hay vehiculos en el inventario *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        system("pause");
     }
     if (cantReg > 0) {
-        int id, opc, pos;
+        int id, pos;
         Vehiculo reg;
         
-        id = validarInt("- Ingrese el ID del Vehiculo que desea Editar: ");
-        cout << endl;
+        id = validarInt("Ingrese el ID del Vehiculo a editar: ");
+        std::cout << std::endl;
         pos = _vehiculosArchivo.buscarRegistro(id);
         
-        if (pos == -1) {
-            cout << "* No Existe ese ID de Vehiculo *" << endl;
-        }
-        if (pos >= 0) {
-            Vehiculo reg;
-            reg = _vehiculosArchivo.leerRegistro(pos);
-            if (reg.getEstado() == true) {
-                tituloVehiculo();
-                mostrarVehiculo(reg);
-                cout << endl << "- Que desea Editar? -" << endl;
-                cout << "1) Marca " << endl;
-                cout << "2) Modelo " << endl;
-                cout << "3) Version " << endl;
-                cout << "4) Color " << endl;
-                cout << "5) Anio " << endl;
-                cout << "6) Stock " << endl;
-                cout << "7) Precio " << endl;
-                cout << "8) Todo " << endl;
-                cout << "0) Salir " << endl;
-                opc = validarInt("Seleccion una Opcion: ");
-                
-                switch (opc) {
-                case 1: {
-                    string nuevaMarca;
-                    cout << "- Ingrese Nueva Marca: ";
-                    getline(cin, nuevaMarca);
-                    reg.setMarca(nuevaMarca);
-                    break;
-                }
-                case 2: {
-                    string nuevoModelo;
-                    cout << "- Ingrese Nuevo Modelo: ";
-                    getline(cin, nuevoModelo);
-                    reg.setModelo(nuevoModelo);
-                    break;
-                }
-                case 3: {
-                    string nuevaVersion;
-                    cout << "- Ingrese Nueva Version: ";
-                    getline(cin, nuevaVersion);
-                    reg.setVersion(nuevaVersion);
-                    break;
-                }
-                case 4: {
-                    string nuevoColor;
-                    nuevoColor = validarString("- Ingrese Nuevo Color: ");
-                    reg.setColor(nuevoColor);
-                    break;
-                }
-                case 5: {
-                    int nuevoAnio;
-                    nuevoAnio = validarInt(" - Ingrese Nuevo Anio : ");
-                    reg.setAnioFabricacion(nuevoAnio);
-                    break;
-                }
-                case 6: {
-                    int nuevoStock;
-                    nuevoStock = validarInt("-Ingrese Nuevo Stock: ");
-                    reg.setStock(nuevoStock);
-                    break;
-                }
-                case 7: {
-                    float nuevoPrecio;
-                    nuevoPrecio = validarInt("-Ingrese Nuevo Precio: ");
-                    reg.setPrecioUnidad(nuevoPrecio);
-                    break;
-                }
-                case 8: {
-                    string nuevaMarca, nuevoModelo, nuevaVersion, nuevoColor;
-                    int nuevoAnio, nuevoStock;
-                    float nuevoPrecio;
-                    cout << "- Nueva Marca: ";
-                    getline(cin, nuevaMarca);
-                    cout << "- Nuevo Modelo: ";
-                    getline(cin, nuevoModelo);
-                    cout << "- Nueva Version: ";
-                    getline(cin, nuevaVersion);
-                    nuevoColor = validarString("- Nuevo Color: ");
-                    nuevoAnio = validarInt("- Nuevo Año: ");
-                    nuevoStock = validarInt("- Nuevo Stock: ");
-                    nuevoPrecio = validarInt("- Precio: ");
-                    reg.setMarca(nuevaMarca);
-                    reg.setModelo(nuevoModelo);
-                    reg.setVersion(nuevaVersion);
-                    reg.setColor(nuevoColor);
-                    reg.setAnioFabricacion(nuevoAnio);
-                    reg.setStock(nuevoStock);
-                    reg.setPrecioUnidad(nuevoPrecio);
-                    break;
-                }
-                case 0:
-                    return;
-                default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
-                    return;
-                }
-                bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
-                if (modifico == true) cout << endl << "* Registro Modificado con Exito *" << endl;
-                else cout << endl << "* No se Pudo Modificar el Registro *" << endl;
-            }
-            else {
-                cout << "* El Registro se Encuentra Eliminado *" << endl;
-            }
-        }
+		if (pos >= 0) {
+
+			Vehiculo reg;
+			reg = _vehiculosArchivo.leerRegistro(pos);
+
+			if (reg.getEstado() == true) {
+				rlutil::hidecursor();
+				rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+				std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+				rlutil::setColor(rlutil::COLOR::WHITE);
+				mostrarVehiculo(reg);
+
+				int opc = 1, y = 0;
+				do {
+					rlutil::setColor(rlutil::COLOR::WHITE);
+					rlutil::locate(43, 17);
+					std::cout << "* ¿Que dato desea editar? *" << std::endl;
+					showItem(" Marca", 51, 19, y == 0);
+					showItem(" Modelo", 51, 20, y == 1);
+					showItem(" Version ", 51, 21, y == 2);
+					showItem(" Color", 51, 22, y == 3);
+					showItem(" Año de fabricacion", 51, 23, y == 4);
+					showItem(" Stock", 51, 24, y == 5);
+					showItem(" Precio", 51, 25, y == 6);
+					showItem(" Todos", 51, 26, y == 7);
+					showItem2(" Volver  ", 51, 28, y == 9);
+
+
+					switch (rlutil::getkey()) {
+					case 14: //UP
+						rlutil::locate(49, 19 + y);
+						std::cout << " " << std::endl;
+						y--;
+						if (y < 0) {
+							y = 0;
+						}
+						if (y == 8) {
+							y--;
+						}
+						break;
+					case 15: //DOWN
+						rlutil::locate(49, 19 + y);
+						std::cout << " " << std::endl;
+						y++;
+						if (y > 9) {
+							y = 9;
+						}
+						if (y == 8) {
+							y++;
+						}
+						break;
+					case 1: //ENTER
+						switch (y) {
+						case 0:
+							system("cls");
+							editarMarca(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 1:
+							system("cls");
+							editarModelo(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 2:
+							system("cls");
+							editarVersion(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 3:
+							system("cls");
+							editarColor(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 4:
+							system("cls");
+							editarAnio(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 5:
+							system("cls");
+							editarStock(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 6:
+							system("cls");
+							editarPrecio(reg, pos);
+							system("pause");
+							opc = 0;
+							system("cls");
+							break;
+						case 7:
+                            system("cls");
+                            editarTodo(reg, pos);
+                            system("pause");
+                            opc = 0;
+                            system("cls");
+                            break;
+						case 9:
+							opc = 0;
+							system("cls");
+							break;
+
+						default:
+							break;
+						}
+                        break;
+					
+                    default:
+							break;
+					}
+					
+				}while (opc != 0);
+
+
+
+			}
+			else {
+				rlutil::setColor(rlutil::COLOR::RED);
+				std::cout << pos << "* El vehiculo buscado esta eliminado *" << std::endl;
+				rlutil::setColor(rlutil::COLOR::WHITE);
+			}
+		}
+		else {
+			rlutil::setColor(rlutil::COLOR::RED);
+			std::cout << pos << "* El vehiculo buscado no existe *" << std::endl;
+			rlutil::setColor(rlutil::COLOR::WHITE);
+		}
+	}
+
+    std::cout << std::endl;
+}
+
+void VehiculosManager::editarMarca(Vehiculo& reg, int pos)
+{
+    std::string nuevaMarca;
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    std::cout << "Ingrese nueva Marca: ";
+    getline(std::cin, nuevaMarca);
+    reg.setMarca(nuevaMarca);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
     }
-    cout << endl;
-    system("pause");
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+
+}
+
+void VehiculosManager::editarModelo(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    std::string nuevoModelo;
+    std::cout << "Ingrese nuevo Modelo: ";
+    getline(std::cin, nuevoModelo);
+    reg.setModelo(nuevoModelo);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+}
+
+void VehiculosManager::editarVersion(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    std::string nuevaVersion;
+    std::cout << "Ingrese nueva Version: ";
+    getline(std::cin, nuevaVersion);
+    reg.setVersion(nuevaVersion);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+}
+
+void VehiculosManager::editarColor(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    std::string nuevoColor;
+    nuevoColor = validarString("Ingrese nuevo Color: ");
+    reg.setColor(nuevoColor);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+}
+
+void VehiculosManager::editarAnio(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    int nuevoAnio;
+    nuevoAnio = validarInt("Ingrese nuevo Año de fabricacion : ");
+    reg.setAnioFabricacion(nuevoAnio);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+}
+
+void VehiculosManager::editarStock(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    int nuevoStock;
+    nuevoStock = validarInt("Ingrese Stock actualizado: ");
+    reg.setStock(nuevoStock);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+}
+
+void VehiculosManager::editarPrecio(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+    float nuevoPrecio;
+    nuevoPrecio = validarInt("Ingrese Precio actualizado: ");
+    reg.setPrecioUnidad(nuevoPrecio);
+    std::cout << std::endl;
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+}
+
+void VehiculosManager::editarTodo(Vehiculo& reg, int pos)
+{
+    rlutil::hidecursor();
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    std::cout << std::endl << "Vehiculo a Editar: " << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+    mostrarVehiculo(reg);
+    std::cout << std::endl << std::endl;
+
+    rlutil::showcursor();
+
+    std::string nuevaMarca, nuevoModelo, nuevaVersion, nuevoColor;
+    int nuevoAnio, nuevoStock;
+    float nuevoPrecio;
+
+    std::cout << "Ingrese nueva Marca: ";
+    getline(std::cin, nuevaMarca);
+    std::cout << std::endl;
+    std::cout << "Ingrese nuevo Modelo: ";
+    getline(std::cin, nuevoModelo);
+    std::cout << std::endl;
+    std::cout << "Ingrese nueva Version: ";
+    getline(std::cin, nuevaVersion);
+    std::cout << std::endl;
+    nuevoColor = validarString("Ingrese nuevo Color: ");
+    std::cout << std::endl;
+    nuevoAnio = validarInt("Ingrese nuevo Año de fabricacion: ");
+    std::cout << std::endl;
+    nuevoStock = validarInt("Ingrese Stock actualizado: ");
+    std::cout << std::endl;
+    nuevoPrecio = validarInt("Ingrese Precio actualizado: ");
+    std::cout << std::endl;
+    
+    reg.setMarca(nuevaMarca);
+    reg.setModelo(nuevoModelo);
+    reg.setVersion(nuevaVersion);
+    reg.setColor(nuevoColor);
+    reg.setAnioFabricacion(nuevoAnio);
+    reg.setStock(nuevoStock);
+    reg.setPrecioUnidad(nuevoPrecio);
+
+    bool modifico = _vehiculosArchivo.modificarRegistro(reg, pos);
+    if (modifico == true) {
+        rlutil::setColor(rlutil::COLOR::GREEN);
+        std::cout << "* Se edito correctamente el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
+    else {
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << "* No se edito el vehiculo *" << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+    }
 }
 
 
 
-void VehiculosManager::eliminarVehiculo() {
+void VehiculosManager::eliminarVehiculo() 
+{
+
+    rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+    rlutil::locate(10, 1);
+    std::cout << "* Modulo de VENTAS *" << std::endl << std::endl;
+    std::cout << "Borrar Venta" << std::endl << std::endl;
+    rlutil::setColor(rlutil::COLOR::WHITE);
+
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
-        cout << endl << "* Error de Archivo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << std::endl << "* Error de Archivo *" << std::endl << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg == 0) {
-        cout << endl << "* No Hay Registros para Eliminar *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << std::endl << "* No hay vehiculos para eliminar *" << std::endl << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg > 0) {
         int id, pos, opc;
-        id = validarInt("- Ingrese el ID del Vehiculo: ");
-        system("cls");
+
+        rlutil::showcursor();
+        id = validarInt("Ingrese el ID del Vehiculo a borrar: ");
+        rlutil::hidecursor();
+        std::cout << std::endl;
+
         pos = _vehiculosArchivo.buscarRegistro(id);
         
-        if (pos == -1) {
-            cout << endl << "* No Existe ese ID de Vehiculo *" << endl << endl;
-            system("pause");
-        }
-        if (pos == -2) {
-            cout << endl << "* Error de Archivo *" << endl;
-        }
         if (pos >= 0) {
+
             Vehiculo reg;
             reg = _vehiculosArchivo.leerRegistro(pos);
+            
             if (reg.getEstado() == true) {
-                cout << endl;
-                tituloVehiculo();
+
+                rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+                std::cout << std::endl << "Vehiculo a Borrar: " << std::endl << std::endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
                 mostrarVehiculo(reg);
-                cout << endl;
-                cout << "- Desea Eliminar el Registro? (1)Si (2)NO " << endl;
-                opc = validarInt("- Seleccione una Opcion: ");
-                
-                switch (opc) {
-                case 1: {
-                    reg.setEstado(false);
-                    bool elimino = _vehiculosArchivo.modificarRegistro(reg, pos);
-                    if (elimino == true) cout << endl << "* Registro Eliminado con Exito *" << endl << endl;
-                    else cout << "* No se Pudo Eliminar el Registro *" << endl;
-                    system("pause");
-                    break;
-                }
-                case 2:
-                    break;
-                default:cout << "* Opcion Incorrecta! *" << endl;
-                }
+                std::cout << std::endl;
+
+                int opc = 1, y = 0;
+
+                do {
+                    rlutil::hidecursor();
+                    rlutil::setColor(rlutil::COLOR::WHITE);
+                    rlutil::locate(35, 18);
+                    std:: cout << "* ¿Confirma que desea borrar este Vehiculo? *" << std::endl;
+                    showItem(" Si   ", 51, 20, y == 0);
+                    showItem(" No  ", 51, 21, y == 1);
+
+
+                    switch (rlutil::getkey()) {
+                    case 14: //UP
+                        rlutil::locate(49, 20 + y);
+                        std::cout << " " << std::endl;
+                        y--;
+                        if (y < 0) {
+                            y = 0;
+                        }
+                        break;
+                    case 15: //DOWN
+                        rlutil::locate(49, 20 + y);
+                        std::cout << " " << std::endl;
+                        y++;
+                        if (y > 1) {
+                            y = 1;
+                        }
+                        break;
+                    case 1: //ENTER
+
+                        switch (y) {
+                        case 0: {
+                            reg.setEstado(false);
+                            bool result = _vehiculosArchivo.modificarRegistro(reg, pos);
+                            if (result = true) {
+                                rlutil::setColor(rlutil::COLOR::GREEN);
+                                rlutil::locate(39, 25);
+                                std::cout << "* El vehiculo se ha borrado correctamente *" << std::endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                                opc = 0;
+                            }
+                            else {
+                                rlutil::setColor(rlutil::COLOR::RED);
+                                rlutil::locate(39, 25);
+                                std::cout << "* No se pudo eliminar el vehiculo *" << std::endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                            }
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+                        }
+                        case 1:
+                            rlutil::setColor(rlutil::COLOR::RED);
+                            rlutil::locate(39, 25);
+                            std::cout << "* Se cancelo el borrado del vehiculo *" << std::endl;
+                            rlutil::setColor(rlutil::COLOR::WHITE);
+                            opc = 0;
+
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+
+                        default:
+                            break;
+                        }
+
+                        break;
+
+                    default:
+
+                        break;
+                    }
+
+                } while (opc != 0);
+
             }
             else {
-                cout << endl << "* El Registro ya se Encuentra Eliminado *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::RED);
+                std::cout << "* El vehiculo ya se encuentra eliminado *" << std::endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                system("pause");
+            }
+        }
+        else {
+            if (pos == -1) {
+                rlutil::setColor(rlutil::COLOR::RED);
+                std::cout << std::endl << "* No existen vehiculos con el ID ingresado *" << std::endl << std::endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                system("pause");
+            }
+            if (pos == -2) {
+
+                rlutil::setColor(rlutil::COLOR::RED);
+                std::cout << std::endl << "* Error de Archivo *" << std::endl << std::endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
                 system("pause");
             }
         }
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void VehiculosManager::restaurarVehiculo() {
     int cantReg = _vehiculosArchivo.contarRegistros();
     if (cantReg == -1) {
-        cout << endl << "* Error de Archivo *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << std::endl << "* Error de Archivo *" << std::endl << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg == 0) {
-        cout << endl << "* No Hay Registros para Restaurar *" << endl << endl;
+        rlutil::setColor(rlutil::COLOR::RED);
+        std::cout << std::endl << "* No hay vehiculos en el inventario *" << std::endl << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
         system("pause");
     }
     if (cantReg > 0) {
-        int id, pos, opc;
-        id = validarInt("- Ingrese el ID del Vehiculo: ");
-        system("cls");
+
+        int id, pos;
+        rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+        rlutil::locate(10, 1);
+        std::cout << "* Modulo de VEHICULOS *" << std::endl << std::endl;
+        std::cout << "Restauracion de vehiculo eliminado" << std::endl << std::endl;
+        rlutil::setColor(rlutil::COLOR::WHITE);
+        rlutil::showcursor();
+
+        id = validarInt("Ingrese el ID del vehiculo a restaurar: ");
+        rlutil::hidecursor();
+        std::cout << std::endl;
+
         pos = _vehiculosArchivo.buscarRegistro(id);
 
-        if (pos == -1) {
-            cout << endl << "* No Existe ese ID de Vehiculo *" << endl << endl;
-        }
         if (pos >= 0) {
+            
             Vehiculo reg;
             reg = _vehiculosArchivo.leerRegistro(pos);
+            
             if (reg.getEstado() == false) {
-                cout << "- Desea Restaurar el Registro? (1)Si (2)NO " << endl;
-                opc = validarInt("- Seleccione una Opcion: ");
                 system("cls");
-                
-                switch (opc) {
-                case 1: {
-                    reg.setEstado(true);
-                    cout << endl;
-                    tituloVehiculo();
-                    mostrarVehiculo(reg);
-                    bool restaurar = _vehiculosArchivo.modificarRegistro(reg, pos);
-                    if (restaurar == true) cout << endl << setw(25) << " " << "* Registro Restaurado con Exito *" << endl << endl;
-                    else cout << endl << "* No se Pudo Restaurar el Registro *" << endl;
-                    system("pause");
-                }
-                case 2:
-                    break;
-                default:cout << endl << "* Opcion Incorrecta! *" << endl << endl;
-                    return;
-                }
+                rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
+                std::cout << std::endl << "Vehiculo a Restaurar: " << std::endl << std::endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
+                mostrarVehiculo(reg);
+                std::cout << std::endl;
+
+                int opc = 1, y = 0;
+
+                do {
+                    rlutil::hidecursor();
+                    rlutil::setColor(rlutil::COLOR::WHITE);
+                    rlutil::locate(35, 18);
+                    std::cout << "* ¿Confirma que desea restaurar este Vehiculo? *" << std::endl;
+                    showItem(" Si   ", 51, 20, y == 0);
+                    showItem(" No  ", 51, 21, y == 1);
+
+
+                    switch (rlutil::getkey()) {
+                    case 14: //UP
+                        rlutil::locate(49, 20 + y);
+                        std::cout << " " << std::endl;
+                        y--;
+                        if (y < 0) {
+                            y = 0;
+                        }
+                        break;
+                    case 15: //DOWN
+                        rlutil::locate(49, 20 + y);
+                        std::cout << " " << std::endl;
+                        y++;
+                        if (y > 1) {
+                            y = 1;
+                        }
+                        break;
+
+                    case 1: //ENTER
+
+                        switch (y) {
+                        case 0: { //SI
+                            reg.setEstado(true);
+                            std::cout << std::endl;
+                            bool restaurar = _vehiculosArchivo.modificarRegistro(reg, pos);
+                            
+                            if (restaurar == true) {
+                                rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
+                                rlutil::locate(39, 25);
+                                std::cout << "* Vehiculo restaurado con Exito *" << std::endl << std::endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                                opc = 0;
+                            }
+                            else {
+                                rlutil::setColor(rlutil::COLOR::RED);
+                                rlutil::locate(39, 25);
+                                std::cout << "* No se pudo restaurar el vehiculo *" << std::endl;
+                                rlutil::setColor(rlutil::COLOR::WHITE);
+                            }
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+                        }
+                        case 1: // NO
+                            rlutil::setColor(rlutil::COLOR::RED);
+                            rlutil::locate(39, 25);
+                            std::cout << "* Se cancelo la restauracion del vehiculo *" << std::endl;
+                            rlutil::setColor(rlutil::COLOR::WHITE);
+                            opc = 0;
+
+                            rlutil::locate(39, 26);
+                            system("pause");
+                            system("cls");
+                            break;
+
+                        default:
+                            break;
+                        }
+
+                        break;
+
+                    default:
+
+                        break;
+                    }
+
+                } while (opc != 0);
+
             }
             else {
-                cout << endl << "* El Registro ya Se Encuentra Disponible *" << endl << endl;
+                rlutil::setColor(rlutil::COLOR::RED);
+                std::cout << std::endl << "* El vehiculo a restaurar no se encuentra eliminado *" << std::endl << std::endl;
+                rlutil::setColor(rlutil::COLOR::WHITE);
                 system("pause");
             }
         }
+        else {
+            rlutil::setColor(rlutil::COLOR::RED);
+            std::cout << std::endl << "* El ID de Vehiculo buscado no existe *" << std::endl << std::endl;
+            rlutil::setColor(rlutil::COLOR::WHITE);
+            system("pause");
+        }
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 
 
 void VehiculosManager::realizarBackup() {
-    string origen = "Vehiculos.dat";
-    string copia = "Vehiculos.bkp";
+    std::string origen = "Vehiculos.dat";
+    std::string copia = "Vehiculos.bkp";
 
-    string comando = "copy " + origen + " " + copia;
+    std::string comando = "copy " + origen + " " + copia;
 
     rlutil::setColor(rlutil::COLOR::WHITE);
     rlutil::locate(35, 9);
@@ -981,12 +1496,12 @@ void VehiculosManager::realizarBackup() {
     rlutil::locate(35, 10);
     if (resultado == 0) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << "* Backup realizado con exito *" << endl;
+        std::cout << "* Backup realizado con exito *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         rlutil::setColor(rlutil::COLOR::RED);
-        cout << "* Hubo un error al copiar el archivo *" << endl;
+        std::cout << "* Hubo un error al copiar el archivo *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
 
@@ -996,10 +1511,10 @@ void VehiculosManager::realizarBackup() {
 }
 
 void VehiculosManager::restaurarBackup() {
-    string origen = "Vehiculos.bkp";
-    string copia = "Vehiculos.dat";
+    std::string origen = "Vehiculos.bkp";
+    std::string copia = "Vehiculos.dat";
 
-    string comando = "copy " + origen + " " + copia;
+    std::string comando = "copy " + origen + " " + copia;
 
     rlutil::setColor(rlutil::COLOR::WHITE);
     rlutil::locate(35, 9);
@@ -1008,12 +1523,12 @@ void VehiculosManager::restaurarBackup() {
     rlutil::locate(35, 10);
     if (resultado == 0) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << "* Restauracion de backup realizada con exito *" << endl;
+        std::cout << "* Restauracion de backup realizada con exito *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << "* Hubo un error al copiar el archivo *" << endl;
+        std::cout << "* Hubo un error al copiar el archivo *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
 
