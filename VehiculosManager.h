@@ -22,7 +22,7 @@ public:
     void buscarPorColor();
     void editarVehiculo();
     void eliminarVehiculo();
-    void resturarVehiculo();
+    void restaurarVehiculo();
     void realizarBackup();
     void restaurarBackup();
 }; 
