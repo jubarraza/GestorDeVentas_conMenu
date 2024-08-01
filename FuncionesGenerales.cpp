@@ -26,6 +26,7 @@ int validarInt(const std::string& mensaje) {
             rlutil::setColor(rlutil::COLOR::RED);
             cout << "* Ingreso No Valido, Solo se Admiten Numeros Positivos *" << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
+            cout << endl;
         }
         else {//Si es Valido
             num = stoi(ingreso);//Convierte el ingreso en tipo String a un a un Int y lo guarda en Num
