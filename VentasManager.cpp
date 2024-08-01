@@ -1195,8 +1195,10 @@ void VentasManager::restaurarVentaBorrada() {
         pos = buscarVenta(id);
 
         if (pos >= 0) {
+            
             Venta reg;
             reg = _archivo.leerVenta(pos);
+            
             if (reg.getEliminado() == true) {
                 system("cls");
                 rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
