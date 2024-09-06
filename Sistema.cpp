@@ -14,18 +14,18 @@ void Sistema::Menu()
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Menú Principal *" << endl;
-        showItem("Vehículos  ", 51, 14, y == 0);
+        cout << "* Men£ Principal *" << endl;
+        showItem("Veh¡culos  ", 51, 14, y == 0);
         showItem("Ventas  ", 51, 15, y == 1);
         showItem("Vendedores  ", 51, 16, y == 2);
         showItem("Sucursales  ", 51, 17, y == 3);
         showItem("Clientes  ", 51, 18, y == 4);
         showItem("Informes  ", 51, 19, y == 5);
-        showItem("Configuración  ", 51, 20, y == 6);
-        showItem("Créditos  ", 51, 21, y == 7);
+        showItem("Configuraci¢n  ", 51, 20, y == 6);
+        showItem("Cr‚ditos  ", 51, 21, y == 7);
         showItem2("Salir del Programa  ", 47, 23, y == 9);
        
 
@@ -108,9 +108,9 @@ void Sistema::Creditos()
     rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
     rlutil::locate(40, 9);
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
-    cout << "Programa realizado por Julieta Barraza" << (char)174 << endl;
+    cout << "Programa realizado por Julieta Barraza" << (char)169 << endl;
     rlutil::locate(40, 10);
-    cout << "Julio 2024" << endl;
+    cout << "Julio/Agosto 2024" << endl;
     rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
     rlutil::anykey();
 

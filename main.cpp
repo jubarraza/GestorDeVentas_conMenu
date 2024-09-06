@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    Sistema s;
+    Sistema s; 
     s.Menu();
 
 

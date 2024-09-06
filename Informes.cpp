@@ -20,12 +20,12 @@ void Informes::Menu()
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
         cout << "* Informes *" << endl;
         showItem("Informe del Inventario - Estado Actual ", 44, 14, y == 0);
-        showItem("Informe de Recaudación - Anual ", 44, 15, y == 1);
+        showItem("Informe de Recaudaci¢n - Anual ", 44, 15, y == 1);
         showItem("Informe Ventas por Vendedor - Anual ", 44, 16, y == 2);
         showItem("Informe Ventas de todos los Vendedores - Mensual ", 44, 17, y == 3);
         showItem("Informe Ventas por Sucursal - Anual ", 44, 18, y == 4);
@@ -198,11 +198,11 @@ void Informes::recaudacionAnual()
     rlutil::setColor(rlutil::COLOR::WHITE);
     do {
         rlutil::showcursor();
-        anio = validarInt("Ingrese año a revisar: ");
+        anio = validarInt("Ingrese a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
 
@@ -225,7 +225,7 @@ void Informes::recaudacionAnual()
         cout << left;
         cout << (char)149 << "  Informe de Recaudacion  - Anual  " << (char)149 << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << "Año: " << anio << endl << endl;
+        cout << "A¤o: " << anio << endl << endl;
 
         cout << left;
         rlutil::setColor(rlutil::COLOR::DARKGREY);
@@ -292,11 +292,11 @@ void Informes::ventasXVendedorAnual()
 
     numLegajo = validarInt("Ingrese el numero de legajo del vendedor: ");
     do {
-        anio = validarInt("Ingrese el año a revisar: ");
+        anio = validarInt("Ingrese el a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
 
@@ -331,7 +331,7 @@ void Informes::ventasXVendedorAnual()
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 cout << "Vendedor: " << vm.mostrarNombreVendedor(id) << endl;
                 cout << "Nro Legajo: " << numLegajo << endl;
-                cout << "Año: " << anio << endl << endl;
+                cout << "A¤o: " << anio << endl << endl;
 
                 cout << left;
                 rlutil::setColor(rlutil::COLOR::DARKGREY);
@@ -412,11 +412,11 @@ void Informes::ventasXVendedoresMensual()
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     do {
-        anio = validarInt("Ingrese el año a revisar: ");
+        anio = validarInt("Ingrese el a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
 
@@ -530,7 +530,7 @@ void Informes::ventasXVendedoresMensual()
 				cout << left;
 				cout << (char)149 << "  Informe de Ventas de todos los Vendedores - Mensual " << (char)149 << endl << endl;
 				rlutil::setColor(rlutil::COLOR::WHITE);
-				cout << "Año: " << anio << endl;
+				cout << "A¤o: " << anio << endl;
 				cout << "Mes: " << mes << endl << endl;
 
 				cout << left;
@@ -564,7 +564,7 @@ void Informes::ventasXVendedoresMensual()
             }
             else {
                 rlutil::setColor(rlutil::COLOR::RED);
-                cout << "* No se encontraron ventas en el mes y año ingresado *" << endl;
+                cout << "* No se encontraron ventas en el mes y a¤o ingresado *" << endl;
                 rlutil::setColor(rlutil::COLOR::WHITE);
             }
 
@@ -606,11 +606,11 @@ void Informes::ventasXSucursalAnual()
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     do {
-        anio = validarInt("Ingrese el año a revisar: ");
+        anio = validarInt("Ingrese el a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
 
@@ -647,7 +647,7 @@ void Informes::ventasXSucursalAnual()
                 cout << left;
                 cout << (char)149 << "  Informe de Ventas por Sucursal  - Anual  " << (char)149 << endl << endl;
                 rlutil::setColor(rlutil::COLOR::WHITE);
-                cout << "Año: " << anio << endl;
+                cout << "A¤o: " << anio << endl;
                 cout << "Sucursal: " << vm.mostrarNombreSucursal(id) << endl;
                 cout << endl;
 
@@ -804,11 +804,11 @@ void Informes::ventasTodasLasSucursalesMensual()
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     do {
-        anio = validarInt("Ingrese el año a revisar: ");
+        anio = validarInt("Ingrese el a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) { 
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         } 
 
@@ -829,7 +829,7 @@ void Informes::ventasTodasLasSucursalesMensual()
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     cout << "* Informe Ventas de todas las Sucursales Mensual *" << endl << endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
-    cout << "Año: " << anio << endl;
+    cout << "A¤o: " << anio << endl;
     cout << "Mes: " << mes << endl;
 
     cout << endl;
@@ -918,11 +918,11 @@ void Informes::ventasTodasLasSucursalesAnual()
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     do {
-        anio = validarInt("Ingrese el año a revisar: ");
+        anio = validarInt("Ingrese el a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
 
@@ -932,7 +932,7 @@ void Informes::ventasTodasLasSucursalesAnual()
     rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
     cout << "* Informe Ventas de todas las Sucursales Anual *" << endl << endl;
     rlutil::setColor(rlutil::COLOR::WHITE);
-    cout << "Año: " << anio << endl;
+    cout << "A¤o: " << anio << endl;
 
     cout << endl;
 
@@ -988,7 +988,7 @@ void Informes::ventasTodasLasSucursalesAnual()
             }
             else {
                 rlutil::setColor(rlutil::COLOR::RED);
-                cout << "* No se encontraron ventas para el año buscado *" << anio << endl;
+                cout << "* No se encontraron ventas para el a¤o buscado *" << anio << endl;
                 rlutil::setColor(rlutil::COLOR::WHITE);
             }
 
@@ -1032,11 +1032,11 @@ void Informes::rankingVentasXModelo()
     rlutil::setColor(rlutil::COLOR::WHITE);
 
     do {
-        anio = validarInt("Ingrese el año a revisar: ");
+        anio = validarInt("Ingrese el a¤o a revisar: ");
 
         if (anio > f.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            cout << "Año no valido." << endl << endl;
+            cout << "A¤o no valido." << endl << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
 
@@ -1063,7 +1063,7 @@ void Informes::rankingVentasXModelo()
             }
             if (sinVentas) {
                 rlutil::setColor(rlutil::COLOR::RED);
-                cout << endl << "* No existen Registros de Ventas para ese Año *" << endl;
+                cout << endl << "* No existen Registros de Ventas para ese A¤o *" << endl;
                 rlutil::setColor(rlutil::COLOR::WHITE);
             }
             else {
@@ -1090,7 +1090,7 @@ void Informes::rankingVentasXModelo()
                 rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
                 cout << "* Ranking Anual de Ventas por Modelo *" << endl << endl;
                 rlutil::setColor(rlutil::COLOR::WHITE);
-                cout << " Año: " << anio << endl << endl;
+                cout << " A¤o: " << anio << endl << endl;
 
                 rlutil::setColor(rlutil::COLOR::DARKGREY);
                 cout << left;

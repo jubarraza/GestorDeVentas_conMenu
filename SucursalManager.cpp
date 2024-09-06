@@ -1,4 +1,4 @@
-ï»¿#define _CRT_SECURE_NO_WARNINGS 
+#define _CRT_SECURE_NO_WARNINGS 
 #include "SucursalManager.h"
 #include "FuncionesGenerales.h"
 #include <iostream>
@@ -23,7 +23,7 @@ void SucursalManager::Menu()
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(45, 11);
         cout << "* Modulo de SUCURSALES *" << endl;
@@ -168,7 +168,7 @@ Sucursal SucursalManager::crearRegistro()
     cout << "* NOMBRE DE SUCURSAL: ";
     getline(cin, nombre);
     reg.setNombre(nombre);
-    cout << "DIRECCIÃ“N DE LA SUCURSAL: " << endl;
+    cout << "DIRECCIàN DE LA SUCURSAL: " << endl;
     d.Cargar();
     reg.setDireccion(d);
     cout << "TELEFONO: ";
@@ -230,7 +230,7 @@ void SucursalManager::listarRegistros()
     do {
         rlutil::locate(39, 9);
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << "* Â¿Como desea ordenar el listado de Sucursales? *" << endl;
+        cout << "* ¨Como desea ordenar el listado de Sucursales? *" << endl;
         showItem(" por ID ", 51, 11, y == 0);
         showItem(" por Nombre ", 51, 12, y == 1);
         showItem2(" Volver ", 51, 14, y == 3);
@@ -537,7 +537,7 @@ void SucursalManager::editarRegistro()
             do {
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(43, 15);
-                cout << "* Â¿Que dato desea editar? *" << endl;
+                cout << "* ¨Que dato desea editar? *" << endl;
                 showItem(" Nombre   ", 51, 17, y == 0);
                 showItem(" Direccion  ", 51, 18, y == 1);
                 showItem(" Telefono  ", 51, 19, y == 2);
@@ -792,7 +792,7 @@ void SucursalManager::borrarSucursal()
                 rlutil::hidecursor();
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(35, 18);
-                cout << "* Â¿Confirma que desea borrar esta Sucursal? *" << endl;
+                cout << "* ¨Confirma que desea borrar esta Sucursal? *" << endl;
                 showItem(" Si   ", 51, 20, y == 0);
                 showItem(" No  ", 51, 21, y == 1);
 

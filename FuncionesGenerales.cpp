@@ -209,7 +209,7 @@ string formatearNumero(float numero) {
 
 string aMinuscula(string cadena) {
     for (string::size_type i = 0; i < cadena.length(); i++) {
-        //size_t, y se usa para asegurar la compatibilidad con el tamaño de la cadena.
+        //size_t, y se usa para asegurar la compatibilidad con el tama¤o de la cadena.
         //cadena.length() asegura que el bucle se ejecute desde el primer caracter(i = 0) hasta el ultimo caracter
         cadena[i] = tolower(cadena[i]);
         //tolower(cadena[i]) convierte el caracter actual a minusculas.
@@ -241,7 +241,7 @@ void showItem(const char* text, int posX, int posY, bool selected)
         rlutil::setBackgroundColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(posX - 2, posY);
-        cout << (char)187 << " " << text << endl;
+        cout << (char)175 << " " << text << endl;
     }
     else {
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
@@ -257,7 +257,7 @@ void showItem2(const char* text, int posX, int posY, bool selected)
         rlutil::setBackgroundColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(posX - 2, posY);
-        cout << (char)187 << " " << text << endl;
+        cout << (char)175 << " " << text << endl;
     }
     else {
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);

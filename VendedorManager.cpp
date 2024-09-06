@@ -23,7 +23,7 @@ void VendedorManager::Menu()
             rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
             rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
             rlutil::locate(35, 9);
-            cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+            cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
             rlutil::locate(45, 11);
             cout << "* Modulo de VENDEDORES *" << endl;
@@ -158,7 +158,7 @@ regreso:
 
         do {
             rlutil::locate(47, 15);
-            cout << "* ¿Desea cargar otro vendedor? *" << endl;
+            cout << "* ¨Desea cargar otro vendedor? *" << endl;
             showItem(" Si ", 51, 17, y == 0);
             showItem(" No ", 51, 18, y == 1);
 
@@ -220,7 +220,7 @@ regreso:
     vendedor.setFechaIngreso(fechaI);
     cout<<"ANTIGUEDAD: ";
     anioAntiguedad=vendedor.calcularAntiguedad();
-    cout << anioAntiguedad << " años" << endl;
+    cout << anioAntiguedad << " a¤os" << endl;
     vendedor.setAntiguedad(anioAntiguedad);
     vendedor.setEliminado(false);
     cout<<endl;
@@ -273,7 +273,7 @@ void VendedorManager::mostrarVendedorEnLinea(Vendedor vendedor){
     cout<<left;
     cout<<setw(10)<<vendedor.getNroLegajo();
     cout<<setw(20)<<vendedor.getFechaIngreso().toString();
-    cout << setw(0) << vendedor.getAntiguedad() << " años"; 
+    cout << setw(0) << vendedor.getAntiguedad() << " a¤os"; 
 }
 
 
@@ -284,7 +284,7 @@ void VendedorManager::menuListado()
     do {
         rlutil::locate(39, 9);
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << "* ¿Como desea ordenar el listado de Vendedores? *" << endl;
+        cout << "* ¨Como desea ordenar el listado de Vendedores? *" << endl;
         showItem(" por Antiguedad ", 51, 11, y == 0);
         showItem(" por Apellido ", 51, 12, y == 1);
         showItem2(" Volver ", 51, 14, y == 3);
@@ -516,7 +516,7 @@ void VendedorManager::EditarVendedor(){
             do {
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(43, 17);
-                cout << "* ¿Que dato desea editar? *" << endl;
+                cout << "* ¨Que dato desea editar? *" << endl;
                 showItem(" Fecha de Ingreso   ", 51, 19, y == 0);
                 showItem2(" Volver  ", 51, 21, y == 2);
 
@@ -612,7 +612,7 @@ void VendedorManager::editarFechaIngreso(Vendedor reg, int pos)
 
     if (result == true) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* El vendedor se editó correctamente *" << endl << endl;
+        cout << endl << "* El vendedor se edit¢ correctamente *" << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
 
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
@@ -670,7 +670,7 @@ void VendedorManager::borrarVendedor(){
                 rlutil::hidecursor();
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(35, 18);
-                cout << "* ¿Confirma que desea borrar este Vendedor? *" << endl;
+                cout << "* ¨Confirma que desea borrar este Vendedor? *" << endl;
                 showItem(" Si   ", 51, 20, y == 0);
                 showItem(" No  ", 51, 21, y == 1);
 

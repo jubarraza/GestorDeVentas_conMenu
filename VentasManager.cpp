@@ -30,7 +30,7 @@ void VentasManager::Menu()
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(45, 11);
         cout << "* Modulo de VENTAS *" << endl;
@@ -137,7 +137,7 @@ void VentasManager::agregarVenta()
 {
     if (_archivo.guardarVenta(crearVenta())) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* La venta se guardó correctamente *" << endl << endl;
+        cout << endl << "* La venta se guard¢ correctamente *" << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
@@ -191,7 +191,7 @@ Venta VentasManager::crearVenta()
             int opcion = 1, y = 0;
             do {
                 rlutil::locate(40, 15);
-                cout << "* El cliente ingresado esta eliminado ¿Desea restaurarlo? *" << endl;
+                cout << "* El cliente ingresado esta eliminado ¨Desea restaurarlo? *" << endl;
                 showItem(" Restaurar cliente eliminado ", 51, 17, y == 0);
                 showItem(" Cargar nuevo Cliente ", 51, 18, y == 1);
 
@@ -258,7 +258,7 @@ Venta VentasManager::crearVenta()
 
         do {
             rlutil::locate(47, 15);
-            cout << "* El cliente ingresado no existe ¿Desea cargarlo? *" << endl;
+            cout << "* El cliente ingresado no existe ¨Desea cargarlo? *" << endl;
             showItem(" Si ", 51, 17, y == 0);
             showItem(" No ", 51, 18, y == 1);
 
@@ -542,7 +542,7 @@ void VentasManager::menuListados()
     do {
         rlutil::locate(39, 9);
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << "* ¿Como desea ordenar el listado de Ventas? *" << endl;
+        cout << "* ¨Como desea ordenar el listado de Ventas? *" << endl;
         showItem(" por ID de Venta ", 51, 11, y == 0);
         showItem(" por Fecha de Venta ", 51, 12, y == 1);
         showItem2(" Volver ", 51, 14, y == 3);
@@ -899,7 +899,7 @@ void VentasManager::editarVenta()
             do {
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(43, 17);
-                cout << "* ¿Que dato desea editar? *" << endl;
+                cout << "* ¨Que dato desea editar? *" << endl;
                 showItem(" Fecha de Venta", 51, 19, y == 0);
                 showItem(" Gastos Administrativos", 51, 20, y == 1);
                 showItem2(" Volver  ", 51, 23, y == 3);
@@ -1087,7 +1087,7 @@ void VentasManager::borrarVenta()
                 rlutil::hidecursor();
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(35, 18);
-                cout << "* ¿Confirma que desea borrar esta Venta? *" << endl;
+                cout << "* ¨Confirma que desea borrar esta Venta? *" << endl;
                 showItem(" Si   ", 51, 20, y == 0);
                 showItem(" No  ", 51, 21, y == 1);
 
@@ -1213,7 +1213,7 @@ void VentasManager::restaurarVentaBorrada() {
                     rlutil::hidecursor();
                     rlutil::setColor(rlutil::COLOR::WHITE);
                     rlutil::locate(35, 18);
-                    cout << "* ¿Confirma que desea restaurar esta Venta? *" << endl;
+                    cout << "* ¨Confirma que desea restaurar esta Venta? *" << endl;
                     showItem(" Si   ", 51, 20, y == 0);
                     showItem(" No  ", 51, 21, y == 1);
 
@@ -1470,7 +1470,7 @@ void VentasManager::mostrarSucursalAsociada(int pos)
     rlutil::setColor(rlutil::COLOR::WHITE);
     cout << "Id Sucursal: #" << aux.getIdSucursal() << endl;
     cout << "Nombre: " << aux.getNombre() << endl;
-    cout << "Dirección: " << aux.getDireccion().toString();
+    cout << "Direcci¢n: " << aux.getDireccion().toString();
     cout << endl;
     cout << "Telefono: " << aux.getTelefono() << endl << endl;
 }
@@ -1601,7 +1601,7 @@ void VentasManager::mostrarVehiculoAsociado(int id)
     cout << "Marca y Modelo: " << aux.getMarca() << " " << aux.getModelo() << endl;
     cout << "Version: " << aux.getVersion() << endl;
     cout << "Color: " << aux.getColor() << endl;
-    cout << "Año de fabricación: " << aux.getAnioFabricacion() << endl;
+    cout << "A¤o de fabricaci¢n: " << aux.getAnioFabricacion() << endl;
     cout << "Precio unidad: $" << formatearNumero(aux.getPrecioUnidad());
     cout << endl;
 }

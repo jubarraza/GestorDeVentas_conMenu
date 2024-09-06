@@ -19,11 +19,11 @@ void Configuracion::Menu() {
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Menu Configuración *" << endl;
-        showItem("Archivo Vehículos  ", 51, 14, y == 0);
+        cout << "* Menu Configuraci¢n *" << endl;
+        showItem("Archivo Veh¡culos  ", 51, 14, y == 0);
         showItem("Archivo Ventas  ", 51, 15, y == 1);
         showItem("Archivo Vendedores  ", 51, 16, y == 2);
         showItem("Archivo Sucursales  ", 51, 17, y == 3);
@@ -104,7 +104,7 @@ void Configuracion::subMenuVehiculos() {
         cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Configuración / Vehículos *" << endl;
+        cout << "* Configuraci¢n / Veh¡culos *" << endl;
         showItem(" Realizar backup   ", 51, 14, y == 0);
         showItem(" Restaurar backup  ", 51, 15, y == 1);
         showItem2(" Volver  ", 51, 17, y == 3);
@@ -178,7 +178,7 @@ void Configuracion::subMenuVentas() {
         cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Configuración / Ventas *" << endl;
+        cout << "* Configuraci¢n / Ventas *" << endl;
         showItem(" Realizar backup   ", 51, 14, y == 0);
         showItem(" Restaurar backup  ", 51, 15, y == 1);
         showItem2(" Volver  ", 51, 17, y == 3);
@@ -251,7 +251,7 @@ void Configuracion::subMenuVendedores() {
         cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Configuración / Vendedores *" << endl;
+        cout << "* Configuraci¢n / Vendedores *" << endl;
         showItem(" Realizar backup   ", 51, 14, y == 0);
         showItem(" Restaurar backup  ", 51, 15, y == 1);
         showItem2(" Volver  ", 51, 17, y == 3);
@@ -325,7 +325,7 @@ void Configuracion::subMenuSucursales() {
         cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Configuración / Sucursales *" << endl;
+        cout << "* Configuraci¢n / Sucursales *" << endl;
         showItem(" Realizar backup   ", 51, 14, y == 0);
         showItem(" Restaurar backup  ", 51, 15, y == 1);
         showItem2(" Volver  ", 51, 17, y == 3);
@@ -400,7 +400,7 @@ void Configuracion::subMenuClientes() {
         cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(47, 11);
-        cout << "* Configuración / Clientes *" << endl;
+        cout << "* Configuraci¢n / Clientes *" << endl;
         showItem(" Realizar backup   ", 51, 14, y == 0);
         showItem(" Restaurar backup  ", 51, 15, y == 1);
         showItem2(" Volver  ", 51, 17, y == 3);

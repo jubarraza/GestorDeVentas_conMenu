@@ -25,7 +25,7 @@ void VehiculosManager::Menu() {
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        std::cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << std::endl;
+        std::cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(45, 11);
         std::cout << "* Modulo de VEHICULOS *" << std::endl;
@@ -130,7 +130,7 @@ void VehiculosManager::Menu() {
 void VehiculosManager::agregarVehiculo() {
     if (_vehiculosArchivo.guardarRegistro(cargarVehiculo())) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        std::cout << std::endl << "* El vehiculo se guardó correctamente *" << std::endl << std::endl;
+        std::cout << std::endl << "* El vehiculo se guard¢ correctamente *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
@@ -144,7 +144,7 @@ Vehiculo VehiculosManager::cargarVehiculo() {
     std::string marca, modelo, version, color;
     int id, anio, stock;
     float precio;
-    Fecha año;
+    Fecha anioF;
     VehiculosArchivo archivo;
     Vehiculo reg;
 
@@ -186,21 +186,21 @@ Vehiculo VehiculosManager::cargarVehiculo() {
     std::cout << std::endl;
 
     while (true) {
-        anio = validarInt("* INGRESE EL AÑO DE FABRICACION: ");
+        anio = validarInt("* INGRESE EL A¥O DE FABRICACION: ");
         
-        if (anio > año.obtenerAnioActual()) {
+        if (anio > anioF.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            std::cout << "* El año de fabricacion no puede ser mayor al año actual *" << std::endl;
+            std::cout << "* El a¤o de fabricacion no puede ser mayor al a¤o actual *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
             std::cout << std::endl;
         }
         if (anio < 2000) {
             rlutil::setColor(rlutil::COLOR::RED);
-            std::cout << "* El año de fabricacion no puede ser menor a 2000 *" << std::endl;
+            std::cout << "* El a¤o de fabricacion no puede ser menor a 2000 *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
             std::cout << std::endl;
         }
-        if (anio <= año.obtenerAnioActual() && anio >= 2000) {
+        if (anio <= anioF.obtenerAnioActual() && anio >= 2000) {
             break;
         }
     }
@@ -234,7 +234,7 @@ void VehiculosManager::tituloVehiculo()
     std::cout << std::setw(14) << "MODELO ";
     std::cout << std::setw(12) << "VERSION ";
     std::cout << std::setw(10) << "COLOR ";
-    std::cout << std::setw(8) << "AÑO ";
+    std::cout << std::setw(8) << "A¥O ";
     std::cout << std::setw(8) << "STOCK ";
     std::cout << std::setw(20) << "PRECIO POR UNIDAD ";
     std::cout << std::endl;
@@ -282,7 +282,7 @@ void VehiculosManager::mostrarVehiculo(Vehiculo reg)
     rlutil::setColor(rlutil::COLOR::WHITE);
     std::cout << reg.getColor() << std::endl;
     rlutil::setColor(rlutil::COLOR::DARKGREY);
-    std::cout << "Año de fabricación: ";
+    std::cout << "A¤o de fabricaci¢n: ";
     rlutil::setColor(rlutil::COLOR::WHITE);
     std::cout << reg.getAnioFabricacion() << std::endl;
     rlutil::setColor(rlutil::COLOR::DARKGREY);
@@ -317,7 +317,7 @@ void VehiculosManager::listarVehiculos() {
         do {
             rlutil::locate(39, 9);
             rlutil::setColor(rlutil::COLOR::WHITE);
-            std::cout << "* ¿Como desea ordenar el listado de Vehiculos? *" << std::endl;
+            std::cout << "* ¨Como desea ordenar el listado de Vehiculos? *" << std::endl;
             showItem(" por ID de vehiculo ", 51, 11, y == 0);
             showItem(" por Precio ", 51, 12, y == 1);
             showItem2(" Volver ", 51, 14, y == 3);
@@ -434,7 +434,7 @@ void VehiculosManager::buscarVehiculo() {
     }
     if (cantReg == 0) {
         rlutil::setColor(rlutil::COLOR::RED);
-        std::cout << std::endl << "* El archivo de vehiculos esta vacío *" << std::endl << std::endl;
+        std::cout << std::endl << "* El archivo de vehiculos esta vac¡o *" << std::endl << std::endl;
         rlutil::setColor(rlutil::COLOR::RED);
         system("pause");
     }
@@ -448,7 +448,7 @@ void VehiculosManager::buscarVehiculo() {
 			showItem("   Por ID ", 45, 11, y == 0);
 			showItem("   Por Marca ", 45, 12, y == 1);
 			showItem("   Por Modelo ", 45, 13, y == 2);
-			showItem("   Por Año de fabricacion ", 45, 14, y == 3);
+			showItem("   Por A¤o de fabricacion ", 45, 14, y == 3);
 			showItem("   Por Color ", 45, 15, y == 4);
 			showItem2(" Volver ", 51, 17, y == 6);
 
@@ -660,7 +660,7 @@ void VehiculosManager::buscarPorModelo() {
 
 void VehiculosManager::buscarPorAnio() {
     int anio, cantReg;
-    Fecha año;
+    Fecha anioF;
     Vehiculo reg;
     std::vector<Vehiculo> resultado;
 
@@ -673,19 +673,19 @@ void VehiculosManager::buscarPorAnio() {
     rlutil::showcursor();
     
     while (true) {
-        anio = validarInt("Ingrese el Año de Fabricacion a buscar: ");
+        anio = validarInt("Ingrese el A¤o de Fabricacion a buscar: ");
         
-        if (anio > año.obtenerAnioActual()) {
+        if (anio > anioF.obtenerAnioActual()) {
             rlutil::setColor(rlutil::COLOR::RED);
-            std::cout << "* El año de fabricacion no puede ser mayor al año actual *" << std::endl;
+            std::cout << "* El a¤o de fabricacion no puede ser mayor al a¤o actual *" << std::endl;
             rlutil::setColor(rlutil::COLOR::WHITE);
         }
         if (anio < 2000) {
             rlutil::setColor(rlutil::COLOR::RED);
-            std::cout << "* El año de fabricacion no puede ser menor a 2000 *" << std::endl;
+            std::cout << "* El a¤o de fabricacion no puede ser menor a 2000 *" << std::endl;
             rlutil::setColor(rlutil::COLOR::RED);
         }
-        if (anio <= año.obtenerAnioActual() && anio >= 2000) {
+        if (anio <= anioF.obtenerAnioActual() && anio >= 2000) {
             break;
         }
     }
@@ -702,7 +702,7 @@ void VehiculosManager::buscarPorAnio() {
     }
     if (resultado.empty() == true) {
         rlutil::setColor(rlutil::COLOR::RED);
-        std::cout << std::endl << "* No se encontraron vehiculos del Año buscado *" << std::endl;
+        std::cout << std::endl << "* No se encontraron vehiculos del A¤o buscado *" << std::endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
@@ -807,12 +807,12 @@ void VehiculosManager::editarVehiculo()
 				do {
 					rlutil::setColor(rlutil::COLOR::WHITE);
 					rlutil::locate(43, 17);
-					std::cout << "* ¿Que dato desea editar? *" << std::endl;
+					std::cout << "* ¨Que dato desea editar? *" << std::endl;
 					showItem(" Marca", 51, 19, y == 0);
 					showItem(" Modelo", 51, 20, y == 1);
 					showItem(" Version ", 51, 21, y == 2);
 					showItem(" Color", 51, 22, y == 3);
-					showItem(" Año de fabricacion", 51, 23, y == 4);
+					showItem(" A¤o de fabricacion", 51, 23, y == 4);
 					showItem(" Stock", 51, 24, y == 5);
 					showItem(" Precio", 51, 25, y == 6);
 					showItem(" Todos", 51, 26, y == 7);
@@ -1062,7 +1062,7 @@ void VehiculosManager::editarAnio(Vehiculo& reg, int pos)
 
     rlutil::showcursor();
     int nuevoAnio;
-    nuevoAnio = validarInt("Ingrese nuevo Año de fabricacion : ");
+    nuevoAnio = validarInt("Ingrese nuevo A¤o de fabricacion : ");
     reg.setAnioFabricacion(nuevoAnio);
     std::cout << std::endl;
 
@@ -1161,7 +1161,7 @@ void VehiculosManager::editarTodo(Vehiculo& reg, int pos)
     std::cout << std::endl;
     nuevoColor = validarString("Ingrese nuevo Color: ");
     std::cout << std::endl;
-    nuevoAnio = validarInt("Ingrese nuevo Año de fabricacion: ");
+    nuevoAnio = validarInt("Ingrese nuevo A¤o de fabricacion: ");
     std::cout << std::endl;
     nuevoStock = validarInt("Ingrese Stock actualizado: ");
     std::cout << std::endl;
@@ -1242,7 +1242,7 @@ void VehiculosManager::eliminarVehiculo()
                     rlutil::hidecursor();
                     rlutil::setColor(rlutil::COLOR::WHITE);
                     rlutil::locate(35, 18);
-                    std:: cout << "* ¿Confirma que desea borrar este Vehiculo? *" << std::endl;
+                    std:: cout << "* ¨Confirma que desea borrar este Vehiculo? *" << std::endl;
                     showItem(" Si   ", 51, 20, y == 0);
                     showItem(" No  ", 51, 21, y == 1);
 
@@ -1389,7 +1389,7 @@ void VehiculosManager::restaurarVehiculo() {
                     rlutil::hidecursor();
                     rlutil::setColor(rlutil::COLOR::WHITE);
                     rlutil::locate(35, 18);
-                    std::cout << "* ¿Confirma que desea restaurar este Vehiculo? *" << std::endl;
+                    std::cout << "* ¨Confirma que desea restaurar este Vehiculo? *" << std::endl;
                     showItem(" Si   ", 51, 20, y == 0);
                     showItem(" No  ", 51, 21, y == 1);
 

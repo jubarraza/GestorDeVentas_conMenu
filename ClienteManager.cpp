@@ -24,7 +24,7 @@ void ClienteManager::Menu()
         rlutil::setBackgroundColor(rlutil::COLOR::BLACK);
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
         rlutil::locate(35, 9);
-        cout << (char)149 << " Sistema de Gestion de Ventas e Inventario " << (char)149 << endl;
+        cout << (char)254 << " Sistema de Gestion de Ventas e Inventario " << (char)254 << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(45, 11);
         cout << "* Modulo de CLIENTES *" << endl;
@@ -129,7 +129,7 @@ void ClienteManager::agregarCliente()
 {
     if (_archivo.guardarCliente(crearCliente())) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* El cliente se guardó correctamente *" << endl << endl;
+        cout << endl << "* El cliente se guard¢ correctamente *" << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
     }
     else {
@@ -164,7 +164,7 @@ regreso:
 
         do {
             rlutil::locate(47, 15);
-            cout << "* ¿Desea cargar otro cliente? *" << endl;
+            cout << "* ¨Desea cargar otro cliente? *" << endl;
             showItem(" Si ", 51, 17, y == 0);
             showItem(" No ", 51, 18, y == 1);
 
@@ -313,7 +313,7 @@ void ClienteManager::menuListado()
     do {
         rlutil::locate(39, 9);
         rlutil::setColor(rlutil::COLOR::WHITE);
-        cout << "* ¿Como desea ordenar el listado de Clientes? *" << endl;
+        cout << "* ¨Como desea ordenar el listado de Clientes? *" << endl;
         showItem(" por Orden de Carga ", 51, 11, y == 0);
         showItem(" por Apellido ", 51, 12, y == 1);
         showItem2(" Volver ", 51, 14, y == 3);
@@ -549,7 +549,7 @@ void ClienteManager::editarCliente()
             do {
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(43, 17);
-                cout << "* ¿Que dato desea editar? *" << endl;
+                cout << "* ¨Que dato desea editar? *" << endl;
                 showItem(" Email   ", 51, 19, y == 0);
                 showItem(" Telefono  ", 51, 20, y == 1);
                 showItem(" Direccion  ", 51, 21, y == 2);
@@ -665,7 +665,7 @@ void ClienteManager::editarEmail(Cliente &reg, int pos)
 
     if (result == true) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* El cliente se editó correctamente *" << endl << endl;
+        cout << endl << "* El cliente se edit¢ correctamente *" << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
 
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
@@ -700,7 +700,7 @@ void ClienteManager::editarTelefono(Cliente &reg, int pos)
 
     if (result == true) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* El cliente se editó correctamente *" << endl << endl;
+        cout << endl << "* El cliente se edit¢ correctamente *" << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
 
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
@@ -725,7 +725,7 @@ void ClienteManager::editarDireccion(Cliente &reg, int pos)
     mostrarCliente(reg);
     cout << endl << endl;
     rlutil::showcursor();
-    cout << "Ingrese nueva dirección: ";
+    cout << "Ingrese nueva direcci¢n: ";
     d.Cargar();
     reg.setDireccion(d);
     rlutil::hidecursor();
@@ -736,7 +736,7 @@ void ClienteManager::editarDireccion(Cliente &reg, int pos)
 
     if (result == true) {
         rlutil::setColor(rlutil::COLOR::LIGHTGREEN);
-        cout << endl << "* El cliente se editó correctamente *" << endl << endl;
+        cout << endl << "* El cliente se edit¢ correctamente *" << endl << endl;
         rlutil::setColor(rlutil::COLOR::WHITE);
 
         rlutil::setColor(rlutil::COLOR::LIGHTMAGENTA);
@@ -794,7 +794,7 @@ void ClienteManager::borrarCliente()
                 rlutil::hidecursor();
                 rlutil::setColor(rlutil::COLOR::WHITE);
                 rlutil::locate(35, 18);
-                cout << "* ¿Confirma que desea borrar este Cliente? *" << endl;
+                cout << "* ¨Confirma que desea borrar este Cliente? *" << endl;
                 showItem(" Si   ", 51, 20, y == 0);
                 showItem(" No  ", 51, 21, y == 1);
 
@@ -920,7 +920,7 @@ void ClienteManager::resturarCliente()
                     rlutil::hidecursor();
                     rlutil::setColor(rlutil::COLOR::WHITE);
                     rlutil::locate(35, 18);
-                    cout << "* ¿Confirma que desea restaurar este Cliente? *" << endl;
+                    cout << "* ¨Confirma que desea restaurar este Cliente? *" << endl;
                     showItem(" Si   ", 51, 20, y == 0);
                     showItem(" No  ", 51, 21, y == 1);
 
@@ -1034,7 +1034,7 @@ void ClienteManager::resturarCliente(long long dni, int pos)
         rlutil::hidecursor();
         rlutil::setColor(rlutil::COLOR::WHITE);
         rlutil::locate(35, 15);
-        cout << "* ¿Confirma que desea restaurar este Cliente? *" << endl;
+        cout << "* ¨Confirma que desea restaurar este Cliente? *" << endl;
         showItem(" Si   ", 51, 17, y == 0);
         showItem(" No  ", 51, 18, y == 1);
 
